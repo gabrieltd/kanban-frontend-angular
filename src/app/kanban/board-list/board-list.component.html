@@ -1,0 +1,28 @@
+<div
+  #container
+  cdkDropList
+  cdkDropListOrientation="horizontal"
+  class="boards"
+  (cdkDropListDropped)="drop($event)"
+>
+  <app-board
+    cdkDrag
+    *ngFor="let board of boards; let i = index"
+    [board]="board"
+    (deleteRequest)="handleDeleteRequest($event)"
+  >
+    <div class="spacer"></div>
+    <mat-icon cdkDragHandle class="handle">drag_indicator</mat-icon>
+  </app-board>
+
+  <div class="board-button">
+    <button
+      mat-button
+      (click)="openDialog()"
+      class="mat-raised-button mat-button-base mat-accent"
+      color="accent"
+    >
+      Nuevo tablero
+    </button>
+  </div>
+</div>

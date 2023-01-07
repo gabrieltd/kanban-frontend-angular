@@ -1,0 +1,55 @@
+:host {
+  text-align: center;
+}
+
+.logout {
+  padding-top: 5em;
+}
+
+div.container {
+  margin-top: 5rem;
+}
+
+mat-card {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.server-error {
+  margin: 8px 0;
+}
+
+input {
+  height: 2em;
+  div.mat-form-field-infix {
+    padding: 0.3em 0;
+    input.mat-input-element {
+      vertical-align: top;
+    }
+  }
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+div.mat-form-field-wrapper {
+  padding-bottom: 1.15em;
+}
+
+form {
+  margin: 1.25rem 0;
+}
+
+.demo {
+  margin-left: 10px;
+}
