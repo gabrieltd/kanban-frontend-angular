@@ -1,0 +1,36 @@
+.mat-card {
+  margin: 10rem auto;
+
+  min-width: 600px;
+  max-width: 600px;
+  padding: 6rem 3rem 2rem 3rem;
+  background: #212121;
+  position: relative;
+}
+
+img {
+  background-color: #fff;
+  border-radius: 50%;
+  width: 140px;
+  height: 140px;
+  position: absolute;
+  top: -76px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+
+  border: 6px solid #212121;
+}
+
+form {
+  text-align: center;
+  mat-form-field {
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  button {
+    margin: 0 5px;
+  }
+}

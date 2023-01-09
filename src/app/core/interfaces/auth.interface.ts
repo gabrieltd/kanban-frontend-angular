@@ -3,7 +3,9 @@ export interface Auth {
   token: string;
   user: {
     id: string;
-    username: string;
     email: string;
+    username: string;
+    image: string;
+    bio: string;
   };
 }

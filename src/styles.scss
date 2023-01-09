@@ -103,6 +103,12 @@ a {
   --mat-mdc-snack-bar-button-color: #ffffff;
 }
 
+.success-snackbar {
+  --mdc-snackbar-container-color: #46ce83;
+  --mdc-snackbar-supporting-text-color: #000000;
+  --mat-mdc-snack-bar-button-color: #000000;
+}
+
 .spacer {
   flex: 1 0;
 }

@@ -16,9 +16,10 @@ import { LayoutComponent } from './layout/layout.component';
 import { HttpClientModule } from '@angular/common/http';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { DeleteButtonComponent } from './delete-button/delete-button.component';
+import { ShowAuthedDirective } from './show-authed.directive';
 
 @NgModule({
-  declarations: [LayoutComponent, DeleteButtonComponent],
+  declarations: [LayoutComponent, DeleteButtonComponent, ShowAuthedDirective],
   imports: [
     CommonModule,
     RouterModule,

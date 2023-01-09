@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { asyncScheduler, delay, timer } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { passwordsMatch } from '../shared/validators/validator';
 
 @Component({
   selector: 'app-auth',
@@ -11,11 +11,16 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./auth.component.scss'],
 })
 export class AuthComponent implements OnInit {
-  form: FormGroup = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.minLength(6), Validators.required]],
-    passwordConfirm: ['', []],
-  });
+  form: FormGroup = this.formBuilder.group(
+    {
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      passwordConfirm: ['', [Validators.required]],
+    },
+    {
+      validators: [passwordsMatch('password', 'passwordConfirm')],
+    }
+  );
 
   type: 'login' | 'signup' = 'signup';
   loading = false;
@@ -31,6 +36,19 @@ export class AuthComponent implements OnInit {
 
   changeType(val: any) {
     this.type = val;
+  }
+
+  isValidForm() {
+    if (this.type === 'signup') {
+      return (
+        this.form.controls['email'].valid &&
+        this.form.controls['password'].valid &&
+        this.form.controls['passwordConfirm'].valid
+      );
+    }
+    return (
+      this.form.controls['email'].valid && this.form.controls['password'].valid
+    );
   }
 
   private showErrorMessage(message: string = 'Error') {
@@ -62,14 +80,6 @@ export class AuthComponent implements OnInit {
     return this.form.get('passwordConfirm');
   }
 
-  get passwordDoesMatch() {
-    if (this.type !== 'signup') {
-      return true;
-    } else {
-      return this.password?.value === this.passwordConfirm?.value;
-    }
-  }
-
   onSubmit() {
     this.loading = true;
 
@@ -78,7 +88,7 @@ export class AuthComponent implements OnInit {
 
     if (this.isLogin) {
       this.authService.attemptAuth('login', email, password).subscribe({
-        next: () => this.router.navigateByUrl('/'),
+        next: () => this.router.navigateByUrl('/kanban'),
         error: (err: Error) => {
           this.loading = false;
           this.showErrorMessage(err.message);
@@ -88,7 +98,7 @@ export class AuthComponent implements OnInit {
 
     if (this.isSignup) {
       this.authService.attemptAuth('register', email, password).subscribe({
-        next: () => this.router.navigateByUrl('/'),
+        next: () => this.router.navigateByUrl('/kanban'),
         error: (err: Error) => {
           this.loading = false;
           this.showErrorMessage(err.message);
@@ -100,7 +110,7 @@ export class AuthComponent implements OnInit {
   demo() {
     this.loading = true;
     this.authService.attemptAuth('login', 'test@test.cl', '123456').subscribe({
-      next: () => this.router.navigateByUrl('/'),
+      next: () => this.router.navigateByUrl('/kanban'),
       error: (err: Error) => {
         this.loading = false;
         this.showErrorMessage(err.message);

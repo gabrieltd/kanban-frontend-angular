@@ -5,6 +5,7 @@ import { map, Observable, shareReplay } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { ApiService } from '../../core/services/api.service';
 import { JwtService } from '../../core/services/jwt.service';
+import { User } from '../../core/interfaces/user.inferface';
 
 @Component({
   selector: 'app-layout',
@@ -13,6 +14,7 @@ import { JwtService } from '../../core/services/jwt.service';
 })
 export class LayoutComponent implements OnInit {
   public isAuthenticated: boolean = false;
+  currentUser!: User;
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe([Breakpoints.Handset])
@@ -24,16 +26,14 @@ export class LayoutComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     public authService: AuthService,
-    private router: Router,
-    private apiService: ApiService,
-    private jwtService: JwtService
+    private router: Router
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.authService.currentUser.subscribe((data) => (this.currentUser = data));
+  }
 
   logout(): void {
-    this.authService
-      .cleanAuth()
-      .subscribe((ok) => this.router.navigateByUrl('/login'));
+    this.authService.cleanAuth().subscribe();
   }
 }

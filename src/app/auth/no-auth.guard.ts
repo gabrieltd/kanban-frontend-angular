@@ -26,12 +26,11 @@ export class NoAuthGuard implements CanActivate, CanLoad {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    console.log('canActivate no-auth');
     return this.authService.isAuthenticated.pipe(
       take(1),
       tap((isAuth) => {
         if (isAuth) {
-          this.router.navigateByUrl('');
+          this.router.navigateByUrl('/kanban');
         }
       }),
       map((isAuth) => !isAuth)

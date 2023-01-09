@@ -31,7 +31,7 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field [color]="email!.valid ? 'accent' : 'primary'">
+        <mat-form-field [color]="password!.valid ? 'accent' : 'primary'">
           <mat-label>Password</mat-label>
           <input
             matInput
@@ -46,7 +46,7 @@
         </mat-form-field>
 
         <mat-form-field
-          [color]="passwordDoesMatch ? 'accent' : 'warn'"
+          [color]="passwordConfirm!.invalid ? 'warn' : 'accent'"
           *ngIf="isSignup"
         >
           <mat-label>Confirmar password</mat-label>
@@ -57,8 +57,8 @@
             autocomplete="off"
           />
 
-          <mat-error *ngIf="passwordConfirm!.dirty && !passwordDoesMatch">
-            Las contraseñas no son iguales
+          <mat-error *ngIf="passwordConfirm!.dirty && passwordConfirm!.invalid">
+            La contraseñas contraseñas deben ser iguales
           </mat-error>
         </mat-form-field>
 
@@ -66,7 +66,7 @@
           mat-raised-button
           color="accent"
           type="submit"
-          [disabled]="form.invalid || !passwordDoesMatch || loading"
+          [disabled]="!isValidForm() || loading"
         >
           Aceptar
         </button>
