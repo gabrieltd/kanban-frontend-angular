@@ -9,7 +9,7 @@ import {
   UrlSegment,
   UrlTree,
 } from '@angular/router';
-import { Observable, tap, take } from 'rxjs';
+import { Observable, tap, take, map } from 'rxjs';
 import { AuthService } from '../core/services/auth.service';
 
 @Injectable({
@@ -26,16 +26,28 @@ export class AuthGuard implements CanActivate, CanLoad {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    console.log('canActivate auth');
+    const init = Object.keys(this.authService.getCurrentUser()).length === 0;
 
-    return this.authService.isAuthenticated.pipe(
-      take(1),
-      tap((isAuth) => {
-        if (!isAuth) {
-          this.router.navigateByUrl('/login');
-        }
-      })
-    );
+    if (init) {
+      console.log('init AAAAAAAAA');
+      return this.authService.refreshSession().pipe(
+        map((res) => {
+          if (!res) {
+            this.router.navigateByUrl('/login');
+          }
+          return res;
+        })
+      );
+    } else {
+      return this.authService.isAuthenticated.pipe(
+        take(1),
+        tap((isAuth) => {
+          if (!isAuth) {
+            this.router.navigateByUrl('/login');
+          }
+        })
+      );
+    }
   }
 
   canLoad(

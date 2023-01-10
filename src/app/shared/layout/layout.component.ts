@@ -13,7 +13,6 @@ import { User } from '../../core/interfaces/user.inferface';
   styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent implements OnInit {
-  public isAuthenticated: boolean = false;
   currentUser!: User;
 
   isHandset$: Observable<boolean> = this.breakpointObserver

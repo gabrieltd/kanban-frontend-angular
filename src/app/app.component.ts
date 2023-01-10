@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './core/services/auth.service';
 import { ApiService } from './core/services/api.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -15,11 +16,5 @@ export class AppComponent implements OnInit {
     private apiService: ApiService
   ) {}
 
-  ngOnInit(): void {
-    this.authService.refreshSession().subscribe((res) => {
-      if (!res) {
-        this.router.navigateByUrl('/login');
-      }
-    });
-  }
+  ngOnInit(): void {}
 }
