@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: '',
+  apiUrl: 'https://kanban-backend-t7oh.onrender.com/api',
 };
