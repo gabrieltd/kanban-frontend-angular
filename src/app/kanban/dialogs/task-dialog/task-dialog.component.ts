@@ -55,9 +55,8 @@ export class TaskDialogComponent {
   }
 
   handleTaskDelete(): void {
-    this.boardService.deleteTask(this.data.task.id).subscribe(() => {
-      this.data.isDelete = true;
-      this.dialogRef.close(this.data);
-    });
+    this.data.isDelete = true;
+    this.dialogRef.close(this.data);
+    this.boardService.deleteTask(this.data.task.id).subscribe();
   }
 }

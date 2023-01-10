@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit, OnDestroy {
+  loading: boolean = false;
   private subscription!: Subscription;
   currentUser!: User;
   form: FormGroup = this.formBuilder.group({
@@ -64,6 +65,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (!this.form.pristine) {
+      this.loading = true;
+
       const username = this.form.get('username')?.value.replaceAll(' ', '-');
 
       let bio = this.form.get('bio')?.value;
@@ -75,9 +78,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.authService.updateProfile({ username, bio }).subscribe({
         next: () => {
           this.showMessage('Perfil actualizado', 'success');
+          this.loading = false;
         },
         error: (err) => {
           this.showMessage(err.message, 'error');
+          this.loading = false;
         },
       });
     }

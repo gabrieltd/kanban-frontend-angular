@@ -1,4 +1,7 @@
+<mat-spinner *ngIf="loading"></mat-spinner>
+
 <div
+  *ngIf="!loading"
   #container
   cdkDropList
   cdkDropListOrientation="horizontal"

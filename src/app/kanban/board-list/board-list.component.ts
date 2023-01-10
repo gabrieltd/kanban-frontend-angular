@@ -20,6 +20,8 @@ import { BoardDialogComponent } from '../dialogs/board-dialog/board-dialog.compo
   styleUrls: ['./board-list.component.scss'],
 })
 export class BoardListComponent implements OnInit {
+  loading: boolean = false;
+
   @ViewChild('container') public div!: ElementRef;
 
   boards: Board[] = [];
@@ -29,14 +31,19 @@ export class BoardListComponent implements OnInit {
   scroll$ = fromEvent<WheelEvent>(document, 'wheel');
 
   ngOnInit(): void {
-    this.boardService
-      .getAll()
-      .pipe(map((data) => data.sort((a, b) => a.priority - b.priority)))
-      .subscribe((data) => (this.boards = data));
+    this.loading = true;
 
     this.scroll$.subscribe((ev: any) => {
       this.div.nativeElement.scrollLeft += ev.deltaY / 2;
     });
+
+    this.boardService
+      .getAll()
+      .pipe(map((data) => data.sort((a, b) => a.priority - b.priority)))
+      .subscribe((data) => {
+        this.loading = false;
+        this.boards = data;
+      });
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -53,9 +60,19 @@ export class BoardListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        const lastElem = this.boards.length;
+        this.boards.push({
+          id: `${result}-${this.boards.length}`,
+          title: result,
+          priority: this.boards.length,
+          tasks: [],
+        });
+
         this.boardService
           .save({ title: result, priority: this.boards.length })
-          .subscribe((data) => this.boards.push({ ...data, tasks: [] }));
+          .subscribe((data) => {
+            this.boards[lastElem] = { ...data, tasks: [] };
+          });
       }
     });
   }

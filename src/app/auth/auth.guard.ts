@@ -29,7 +29,6 @@ export class AuthGuard implements CanActivate, CanLoad {
     const init = Object.keys(this.authService.getCurrentUser()).length === 0;
 
     if (init) {
-      console.log('init AAAAAAAAA');
       return this.authService.refreshSession().pipe(
         map((res) => {
           if (!res) {

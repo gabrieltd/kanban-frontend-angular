@@ -43,9 +43,15 @@ export class BoardComponent implements OnInit {
         if (result.isNew) {
           const priority = this.board.tasks.length;
           const boardId = this.board.id;
+
+          const lastElem = this.board.tasks.length;
+          this.board.tasks.push({ ...result.task, priority, boardId });
+
           this.boardService
             .saveTask({ ...result.task, priority, boardId })
-            .subscribe((data) => this.board.tasks.push(data));
+            .subscribe((data) => {
+              this.board.tasks[lastElem] = data;
+            });
         } else if (result.isDelete) {
           this.board.tasks = this.board.tasks.filter(
             (t) => t.id !== result.task.id
@@ -65,9 +71,8 @@ export class BoardComponent implements OnInit {
 
   handleDelete(): void {
     const boardId = this.board.id;
-    this.boardService.delete(boardId).subscribe(() => {
-      this.deleteRequest.emit(boardId);
-    });
+    this.deleteRequest.emit(boardId);
+    this.boardService.delete(boardId).subscribe();
   }
 
   sortTasks(): void {

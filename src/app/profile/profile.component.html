@@ -1,55 +1,63 @@
 <mat-card class="mat-card">
   <img [src]="this.currentUser.image" alt="" />
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <mat-form-field color="primary">
-      <mat-label>Nombre de usuario</mat-label>
-      <input
-        matInput
-        formControlName="username"
-        type="text"
-        autocomplete="off"
-      />
+  <div class="card-container">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field color="primary">
+        <mat-label>Nombre de usuario</mat-label>
+        <input
+          matInput
+          formControlName="username"
+          type="text"
+          autocomplete="off"
+        />
 
-      <mat-error *ngIf="true">
-        <span *ngIf="form.controls['username'].hasError('required')"
-          >El nombre de usuario es requerido</span
-        >
-        <span
-          *ngIf="form.controls['username'].hasError('minlength'); else second"
-          >El nombre de usuario debe contener al menos 3 caracteres</span
-        >
-        <ng-template #second>
+        <mat-error *ngIf="true">
+          <span *ngIf="form.controls['username'].hasError('required')"
+            >El nombre de usuario es requerido</span
+          >
           <span
-            *ngIf="form.controls['username'].hasError('whitespace'); else third"
-            >Debe ingresar un nombre de usuario válido</span
+            *ngIf="form.controls['username'].hasError('minlength'); else second"
+            >El nombre de usuario debe contener al menos 3 caracteres</span
           >
-        </ng-template>
+          <ng-template #second>
+            <span
+              *ngIf="
+                form.controls['username'].hasError('whitespace');
+                else third
+              "
+              >Debe ingresar un nombre de usuario válido</span
+            >
+          </ng-template>
 
-        <ng-template #third>
-          <span *ngIf="form.controls['username'].hasError('pattern')"
-            >El nombre de usuario solo puede contener las letras a-z y los
-            caracteres -_*.</span
-          >
-        </ng-template>
-      </mat-error>
-    </mat-form-field>
+          <ng-template #third>
+            <span *ngIf="form.controls['username'].hasError('pattern')"
+              >El nombre de usuario solo puede contener las letras a-z y los
+              caracteres -_*.</span
+            >
+          </ng-template>
+        </mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Bio</mat-label>
-      <textarea matInput rows="3" formControlName="bio"></textarea>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Bio</mat-label>
+        <textarea matInput rows="3" formControlName="bio"></textarea>
+      </mat-form-field>
 
-    <span></span>
+      <span></span>
 
-    <button
-      mat-raised-button
-      color="accent"
-      type="submit"
-      [disabled]="form.invalid"
-    >
-      Aceptar
-    </button>
-    <button mat-stroked-button type="button" (click)="goBack()">Volver</button>
-  </form>
+      <button
+        mat-raised-button
+        color="accent"
+        type="submit"
+        [disabled]="form.invalid"
+      >
+        Aceptar
+      </button>
+      <button mat-stroked-button type="button" (click)="goBack()">
+        Volver
+      </button>
+    </form>
+  </div>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
 </mat-card>

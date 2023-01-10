@@ -15,6 +15,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { LayoutComponent } from './layout/layout.component';
 import { HttpClientModule } from '@angular/common/http';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 import { DeleteButtonComponent } from './delete-button/delete-button.component';
 import { ShowAuthedDirective } from './show-authed.directive';
 
@@ -36,6 +39,8 @@ import { ShowAuthedDirective } from './show-authed.directive';
     MatSnackBarModule,
     HttpClientModule,
     DragDropModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
   ],
   exports: [
     LayoutComponent,
@@ -55,6 +60,8 @@ import { ShowAuthedDirective } from './show-authed.directive';
     HttpClientModule,
     DragDropModule,
     DeleteButtonComponent,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class SharedModule {}
