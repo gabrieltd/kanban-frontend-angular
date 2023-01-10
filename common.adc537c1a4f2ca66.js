@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkkanban_frontend=self.webpackChunkkanban_frontend||[]).push([[592],{610:(c,r,a)=>{a.d(r,{i:()=>n,m:()=>u});const n=e=>e.value.startsWith(" ")||e.value.endsWith(" ")?{whitespace:!0}:null,u=(e,o)=>t=>{const l=t.get(e),s=t.get(o);return l?.value!==s?.value?(s?.setErrors({passwordDoesMatch:!0}),{passwordNotMatch:!0}):(s?.setErrors(null),null)}}}]);
