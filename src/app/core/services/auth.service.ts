@@ -31,6 +31,12 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+
+  public loading = this.loadingSubject
+    .asObservable()
+    .pipe(distinctUntilChanged());
+
   private currentUserSubject = new BehaviorSubject<User>({} as User);
   public currentUser = this.currentUserSubject
     .asObservable()
@@ -131,5 +137,9 @@ export class AuthService {
         map((data) => this.currentUserSubject.next(data)),
         catchError((err) => throwError(() => this.handleProfileError(err)))
       );
+  }
+
+  setLoading(status: boolean) {
+    this.loadingSubject.next(status);
   }
 }

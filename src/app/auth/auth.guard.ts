@@ -9,7 +9,7 @@ import {
   UrlSegment,
   UrlTree,
 } from '@angular/router';
-import { Observable, tap, take, map } from 'rxjs';
+import { Observable, tap, take, map, delay } from 'rxjs';
 import { AuthService } from '../core/services/auth.service';
 
 @Injectable({
@@ -29,8 +29,11 @@ export class AuthGuard implements CanActivate, CanLoad {
     const init = Object.keys(this.authService.getCurrentUser()).length === 0;
 
     if (init) {
+      this.authService.setLoading(true);
+
       return this.authService.refreshSession().pipe(
         map((res) => {
+          this.authService.setLoading(false);
           if (!res) {
             this.router.navigateByUrl('/login');
           }

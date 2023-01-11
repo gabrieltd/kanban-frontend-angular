@@ -1,3 +1,4 @@
 <app-layout>
+  <mat-spinner *ngIf="authService.loading | async"></mat-spinner>
   <router-outlet></router-outlet>
 </app-layout>

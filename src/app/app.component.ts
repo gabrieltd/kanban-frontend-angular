@@ -11,7 +11,7 @@ import { environment } from '../environments/environment';
 })
 export class AppComponent implements OnInit {
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private router: Router,
     private apiService: ApiService
   ) {}
