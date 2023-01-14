@@ -13,6 +13,7 @@ import { TaskDialogComponent } from '../dialogs/task-dialog/task-dialog.componen
 })
 export class BoardComponent implements OnInit {
   isDeleting: boolean = false;
+  hasPreviewData: boolean = true;
 
   @Input() board!: Board;
   @Output() deleteRequest = new EventEmitter<string>();
@@ -20,6 +21,8 @@ export class BoardComponent implements OnInit {
   constructor(private boardService: BoardService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
+    this.hasPreviewData = this.board.id.includes(this.board.title);
+
     if (this.board.tasks) {
       this.board.tasks.sort((a, b) => a.priority - b.priority);
     }
