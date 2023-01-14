@@ -2,8 +2,10 @@
   mat-button
   color="warn"
   (click)="canDelete ? deleteBoard() : enableDelete()"
+  [class.spinner]="showSpinner"
 >
-  <mat-icon>delete</mat-icon>
+  <mat-icon *ngIf="!showSpinner">delete</mat-icon>
+
   <span *ngIf="canDelete">Confirmar</span>
 </button>
 

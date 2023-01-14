@@ -12,6 +12,8 @@ import { TaskDialogComponent } from '../dialogs/task-dialog/task-dialog.componen
   styleUrls: ['./board.component.scss'],
 })
 export class BoardComponent implements OnInit {
+  isDeleting: boolean = false;
+
   @Input() board!: Board;
   @Output() deleteRequest = new EventEmitter<string>();
 
@@ -70,9 +72,12 @@ export class BoardComponent implements OnInit {
   }
 
   handleDelete(): void {
+    this.isDeleting = true;
     const boardId = this.board.id;
-    this.deleteRequest.emit(boardId);
-    this.boardService.delete(boardId).subscribe();
+    this.boardService.delete(boardId).subscribe(() => {
+      this.isDeleting = false;
+      this.deleteRequest.emit(boardId);
+    });
   }
 
   sortTasks(): void {

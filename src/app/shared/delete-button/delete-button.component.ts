@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 
 @Component({
   selector: 'app-delete-button',
@@ -7,7 +7,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class DeleteButtonComponent {
   canDelete: boolean = false;
-
+  @Input() showSpinner = false;
   @Output() delete = new EventEmitter<boolean>();
 
   enableDelete() {
