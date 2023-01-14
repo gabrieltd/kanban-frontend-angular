@@ -10,6 +10,8 @@ import { environment } from '../environments/environment';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  title = 'kanban-frontend';
+
   constructor(
     public authService: AuthService,
     private router: Router,
