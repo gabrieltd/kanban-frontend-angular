@@ -14,7 +14,7 @@
 }
 
 .sidenav {
-  width: 200px;
+  width: 250px;
   font-family: sofia-pro;
 }
 
@@ -57,7 +57,7 @@ a {
   padding: 0 16px;
 }
 
-a.profile {
+a.profile-link {
   .container {
     display: flex;
 
@@ -70,5 +70,13 @@ a.profile {
     height: 20px;
     background-color: #fff;
     border-radius: 50%;
+  }
+}
+
+a.link {
+  .container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 }

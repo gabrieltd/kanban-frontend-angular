@@ -17,12 +17,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { DeleteButtonComponent } from './delete-button/delete-button.component';
 import { ShowAuthedDirective } from './show-authed.directive';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
-  declarations: [LayoutComponent, DeleteButtonComponent, ShowAuthedDirective],
+  declarations: [
+    LayoutComponent,
+    DeleteButtonComponent,
+    ShowAuthedDirective,
+    NotFoundComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule,
@@ -41,6 +49,8 @@ import { ShowAuthedDirective } from './show-authed.directive';
     DragDropModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
+    MatTooltipModule,
+    NgxSkeletonLoaderModule,
   ],
   exports: [
     LayoutComponent,
@@ -62,6 +72,7 @@ import { ShowAuthedDirective } from './show-authed.directive';
     DeleteButtonComponent,
     MatProgressBarModule,
     MatProgressSpinnerModule,
+    NgxSkeletonLoaderModule,
   ],
 })
 export class SharedModule {}

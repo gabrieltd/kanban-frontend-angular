@@ -22,9 +22,10 @@ export class AuthComponent implements OnInit {
     }
   );
 
-  type: 'login' | 'signup' = 'signup';
+  type: 'login' | 'signup' = 'login';
   loading = false;
-
+  hide: boolean = true;
+  hideConfirm: boolean = true;
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -88,7 +89,7 @@ export class AuthComponent implements OnInit {
 
     if (this.isLogin) {
       this.authService.attemptAuth('login', email, password).subscribe({
-        next: () => this.router.navigateByUrl('/kanban'),
+        next: () => this.router.navigateByUrl('/dashboard'),
         error: (err: Error) => {
           this.loading = false;
           this.showErrorMessage(err.message);
@@ -98,7 +99,7 @@ export class AuthComponent implements OnInit {
 
     if (this.isSignup) {
       this.authService.attemptAuth('register', email, password).subscribe({
-        next: () => this.router.navigateByUrl('/kanban'),
+        next: () => this.router.navigateByUrl('/dashboard'),
         error: (err: Error) => {
           this.loading = false;
           this.showErrorMessage(err.message);
@@ -110,7 +111,7 @@ export class AuthComponent implements OnInit {
   demo() {
     this.loading = true;
     this.authService.attemptAuth('login', 'test@test.cl', '123456').subscribe({
-      next: () => this.router.navigateByUrl('/kanban'),
+      next: () => this.router.navigateByUrl('/dashboard'),
       error: (err: Error) => {
         this.loading = false;
         this.showErrorMessage(err.message);

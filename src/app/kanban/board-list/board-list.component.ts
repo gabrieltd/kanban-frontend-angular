@@ -9,10 +9,25 @@ import {
 } from '@angular/core';
 import { BoardService } from '../../core/services/board.service';
 import { Board } from '../../core/interfaces/board.interface';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { fromEvent, map, Observable } from 'rxjs';
+import {
+  CdkDragDrop,
+  CdkDropListGroup,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
+import {
+  catchError,
+  fromEvent,
+  map,
+  Observable,
+  switchMap,
+  of,
+  tap,
+} from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { BoardDialogComponent } from '../dialogs/board-dialog/board-dialog.component';
+import { ProjectService } from '../../core/services/project.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Project } from '../../core/interfaces/project.interface';
 
 @Component({
   selector: 'app-board-list',
@@ -20,13 +35,19 @@ import { BoardDialogComponent } from '../dialogs/board-dialog/board-dialog.compo
   styleUrls: ['./board-list.component.scss'],
 })
 export class BoardListComponent implements OnInit {
+  boards: Board[] = [];
+  projectId: string = '';
   loading: boolean = false;
 
   @ViewChild('container') public div!: ElementRef;
 
-  boards: Board[] = [];
-
-  constructor(private boardService: BoardService, public dialog: MatDialog) {}
+  constructor(
+    private projectService: ProjectService,
+    private boardService: BoardService,
+    private route: ActivatedRoute,
+    private router: Router,
+    public dialog: MatDialog
+  ) {}
 
   scroll$ = fromEvent<WheelEvent>(document, 'wheel');
 
@@ -37,12 +58,23 @@ export class BoardListComponent implements OnInit {
       this.div.nativeElement.scrollLeft += ev.deltaY / 2;
     });
 
-    this.boardService
-      .getAll()
-      .pipe(map((data) => data.sort((a, b) => a.priority - b.priority)))
-      .subscribe((data) => {
+    this.route.paramMap
+      .pipe(
+        switchMap((params) => {
+          const projectId = params.get('projectId');
+          return this.projectService.getById(projectId!);
+        }),
+        catchError((error) => {
+          this.router.navigateByUrl('404');
+          return of();
+        }),
+        tap((project) => project.boards.sort((a, b) => a.priority - b.priority))
+      )
+
+      .subscribe((project) => {
         this.loading = false;
-        this.boards = data;
+        this.projectId = project.id;
+        this.boards = project.boards;
       });
   }
 
@@ -66,10 +98,16 @@ export class BoardListComponent implements OnInit {
           title: result,
           priority: this.boards.length,
           tasks: [],
+          projectId: this.projectId,
         });
 
         this.boardService
-          .save({ title: result, priority: this.boards.length })
+          .save({
+            title: result,
+            priority: this.boards.length,
+            projectId: this.projectId,
+          })
+
           .subscribe((data) => {
             this.boards[lastElem] = { ...data, tasks: [] };
           });

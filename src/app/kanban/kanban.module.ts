@@ -13,7 +13,12 @@ import { BoardDialogComponent } from './dialogs/board-dialog/board-dialog.compon
 import { TaskDialogComponent } from './dialogs/task-dialog/task-dialog.component';
 
 @NgModule({
-  declarations: [BoardListComponent, BoardComponent, BoardDialogComponent, TaskDialogComponent],
+  declarations: [
+    BoardListComponent,
+    BoardComponent,
+    BoardDialogComponent,
+    TaskDialogComponent,
+  ],
   imports: [
     CommonModule,
     KanbanRoutingModule,

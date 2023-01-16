@@ -6,7 +6,7 @@
           <h3 mat-subheader>Crear cuenta</h3>
 
           <button mat-stroked-button (click)="changeType('login')">
-            Ya tienes cuenta?
+            ¿Ya tienes cuenta?
           </button>
         </div>
 
@@ -17,7 +17,7 @@
             mat-stroked-button
             (click)="changeType('signup')"
           >
-            Nuevo usuario?
+            ¿Nuevo usuario?
           </button>
         </div>
 
@@ -43,8 +43,18 @@
               formControlName="password"
               type="password"
               autocomplete="off"
+              [type]="hide ? 'password' : 'text'"
             />
-
+            <button
+              type="button"
+              mat-icon-button
+              matSuffix
+              (click)="hide = !hide"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide"
+            >
+              <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+            </button>
             <mat-error *ngIf="password!.invalid && password!.dirty">
               La contraseña debe tener al menos 6 caracteres
             </mat-error>
@@ -60,7 +70,21 @@
               formControlName="passwordConfirm"
               type="password"
               autocomplete="off"
+              [type]="hideConfirm ? 'password' : 'text'"
             />
+
+            <button
+              type="button"
+              mat-icon-button
+              matSuffix
+              (click)="hideConfirm = !hideConfirm"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hideConfirm"
+            >
+              <mat-icon>{{
+                hideConfirm ? "visibility_off" : "visibility"
+              }}</mat-icon>
+            </button>
 
             <mat-error
               *ngIf="passwordConfirm!.dirty && passwordConfirm!.invalid"

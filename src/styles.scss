@@ -117,6 +117,12 @@ a {
   display: flex;
   justify-content: space-between;
 }
+.bottom-aligner {
+  display: inline-block;
+  height: 100%;
+  vertical-align: bottom;
+  width: 0px;
+}
 
 mat-spinner {
   margin: 0 auto;

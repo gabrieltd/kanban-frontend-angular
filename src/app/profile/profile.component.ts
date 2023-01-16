@@ -89,6 +89,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.router.navigateByUrl('/kanban');
+    this.router.navigateByUrl('/dashboard');
   }
 }

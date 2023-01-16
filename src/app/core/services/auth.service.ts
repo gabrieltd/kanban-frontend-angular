@@ -43,7 +43,9 @@ export class AuthService {
     .pipe(distinctUntilChanged());
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-  public isAuthenticated = this.isAuthenticatedSubject.asObservable();
+  public isAuthenticated = this.isAuthenticatedSubject
+    .asObservable()
+    .pipe(distinctUntilChanged());
 
   constructor(
     private apiService: ApiService,
@@ -66,7 +68,7 @@ export class AuthService {
     if (status >= 400 && status < 500) {
       return new Error('Email o contraseña incorrecta');
     }
-    return new Error('Algo salió mal');
+    return new Error('Algo salió mal. Inténtelo más tarde.');
   }
 
   private handleProfileError(error: HttpErrorResponse) {
@@ -75,7 +77,7 @@ export class AuthService {
     if (status === 409) {
       return new Error('El nombre de usuario ya existe');
     }
-    return new Error('Algo salió mal');
+    return new Error('Algo salió mal. Inténtelo más tarde.');
   }
 
   attemptAuth(

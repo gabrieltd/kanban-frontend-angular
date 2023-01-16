@@ -30,7 +30,7 @@ export class NoAuthGuard implements CanActivate, CanLoad {
       take(1),
       tap((isAuth) => {
         if (isAuth) {
-          this.router.navigateByUrl('/kanban');
+          this.router.navigateByUrl('/dashboard');
         }
       }),
       map((isAuth) => !isAuth)

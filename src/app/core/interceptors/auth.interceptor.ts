@@ -66,13 +66,13 @@ export class AuthInterceptor implements HttpInterceptor {
     return this.authService.refreshSession().pipe(
       switchMap((res) => {
         this.accessToken = this.jwtService.getToken();
+
         const authRequest = request.clone({
           setHeaders: {
             Authorization: `Bearer ${this.accessToken}`,
           },
         });
 
-        // Send the cloned request with the new access token
         return next.handle(authRequest);
       }),
 

@@ -11,15 +11,21 @@
     <mat-nav-list>
       <a
         mat-list-item
-        routerLink="/kanban"
         (click)="drawer.close()"
+        routerLink="/dashboard"
+        class="link"
         *appShowAuthed="true"
-        >🍱 Kanban</a
       >
+        <div class="container">
+          <mat-icon aria-hidden="false" fontIcon="dashboard"></mat-icon>
+          <span>Dashboard</span>
+        </div>
+      </a>
+
       <a
         mat-list-item
         routerLink="/perfil"
-        class="profile"
+        class="profile-link"
         (click)="drawer.close()"
         *appShowAuthed="true"
       >
@@ -52,11 +58,15 @@
 
       <span class="fill-space"></span>
       <div *ngIf="!(isHandset$ | async)">
-        <a mat-button routerLink="/kanban" *appShowAuthed="true">🍱 Kanban</a>
+        <a mat-button routerLink="/dashboard" *appShowAuthed="true">
+          <mat-icon aria-hidden="false" fontIcon="dashboard"></mat-icon>
+          Dashboard</a
+        >
+
         <a
           mat-button
           routerLink="/perfil"
-          class="profile"
+          class="profile-link"
           *appShowAuthed="true"
         >
           <div class="container">
@@ -89,7 +99,6 @@
           <div class="icon-align">
             <mat-icon
               aria-hidden="false"
-              aria-label="Example home icon"
               fontIcon="power_settings_new"
             ></mat-icon>
 
