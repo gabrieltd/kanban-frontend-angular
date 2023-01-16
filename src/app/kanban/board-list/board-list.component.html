@@ -1,22 +1,26 @@
-<mat-spinner *ngIf="loading"></mat-spinner>
-
 <div
-  *ngIf="!loading"
   #container
   cdkDropList
   cdkDropListOrientation="horizontal"
   class="boards"
   (cdkDropListDropped)="drop($event)"
 >
-  <app-board
-    cdkDrag
-    *ngFor="let board of boards; let i = index"
-    [board]="board"
-    (deleteRequest)="handleDeleteRequest($event)"
-  >
-    <div class="spacer"></div>
-    <mat-icon cdkDragHandle class="handle">drag_indicator</mat-icon>
-  </app-board>
+  <ng-container *ngIf="!loading.status">
+    <app-board
+      cdkDrag
+      *ngFor="let board of boards; let i = index"
+      [board]="board"
+      (deleteRequest)="handleDeleteRequest($event)"
+    >
+      <div class="spacer"></div>
+      <mat-icon cdkDragHandle class="handle">drag_indicator</mat-icon>
+    </app-board>
+  </ng-container>
+  <ng-container *ngIf="loading.status">
+    <ng-container *ngFor="let _ of [].constructor(loading.quantity)">
+      <app-board-loading></app-board-loading
+    ></ng-container>
+  </ng-container>
 
   <div class="board-button">
     <button

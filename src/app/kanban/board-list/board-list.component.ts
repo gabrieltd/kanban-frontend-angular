@@ -37,7 +37,10 @@ import { Project } from '../../core/interfaces/project.interface';
 export class BoardListComponent implements OnInit {
   boards: Board[] = [];
   projectId: string = '';
-  loading: boolean = false;
+  loading: { status: boolean; quantity: number } = {
+    status: false,
+    quantity: 3,
+  };
 
   @ViewChild('container') public div!: ElementRef;
 
@@ -52,7 +55,7 @@ export class BoardListComponent implements OnInit {
   scroll$ = fromEvent<WheelEvent>(document, 'wheel');
 
   ngOnInit(): void {
-    this.loading = true;
+    this.loading = { status: true, quantity: 3 };
 
     this.scroll$.subscribe((ev: any) => {
       this.div.nativeElement.scrollLeft += ev.deltaY / 2;
@@ -72,7 +75,7 @@ export class BoardListComponent implements OnInit {
       )
 
       .subscribe((project) => {
-        this.loading = false;
+        this.loading.status = false;
         this.projectId = project.id;
         this.boards = project.boards;
       });
