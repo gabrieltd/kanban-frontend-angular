@@ -1,0 +1,50 @@
+.dashboard {
+  overflow: hidden;
+}
+
+.toolbar {
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  gap: 2rem;
+  width: 1696px;
+  @media (max-width: 1696px) {
+    width: 1264px;
+  }
+
+  @media (max-width: 1264px) {
+    width: 832px;
+  }
+
+  @media (max-width: 832px) {
+    width: 400px;
+  }
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+
+  justify-content: center;
+  padding-bottom: 2rem;
+}
+
+.inner-container {
+  width: 1696px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+
+  @media (max-width: 1696px) {
+    width: 1264px;
+  }
+
+  @media (max-width: 1264px) {
+    width: 832px;
+  }
+
+  @media (max-width: 832px) {
+    width: 400px;
+  }
+}

@@ -97,8 +97,8 @@ export class BoardListComponent implements OnInit {
       if (result) {
         const lastElem = this.boards.length;
         this.boards.push({
-          id: `${result}-${this.boards.length}`,
-          title: result,
+          id: `${result.title}-${this.boards.length}`,
+          title: result.title,
           priority: this.boards.length,
           tasks: [],
           projectId: this.projectId,
@@ -106,7 +106,7 @@ export class BoardListComponent implements OnInit {
 
         this.boardService
           .save({
-            title: result,
+            title: result.title,
             priority: this.boards.length,
             projectId: this.projectId,
           })

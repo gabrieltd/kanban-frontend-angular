@@ -23,3 +23,22 @@ export const passwordsMatch = (pass: string, passConfirm: string) => {
     return null;
   };
 };
+
+export const duplicatedValue = (arg1: string, arg2: string | string[]) => {
+  return (formGroup: AbstractControl): ValidationErrors | null => {
+    const control = formGroup.get(arg1);
+
+    if (
+      (arg2 instanceof String && control?.value === arg2) ||
+      (arg2 instanceof Array && arg2.includes(control?.value))
+    ) {
+      control?.setErrors({ duplicated: true });
+
+      return { duplicated: true };
+    }
+
+    control?.setErrors(control.errors);
+
+    return null;
+  };
+};

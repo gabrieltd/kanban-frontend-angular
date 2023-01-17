@@ -1,0 +1,30 @@
+<div class="dashboard">
+  <div class="toolbar">
+    <h3>Dashboard</h3>
+    <button
+      type="button"
+      mat-stroked-button
+      color="primary"
+      (click)="openNewDialog()"
+    >
+      <mat-icon>+</mat-icon>
+      Nuevo proyecto
+    </button>
+  </div>
+
+  <div class="card-container">
+    <div class="inner-container">
+      <app-project-card
+        *ngFor="let project of projects"
+        [project]="project"
+        (deleteRequest)="handleDeleteRequest($event)"
+      ></app-project-card>
+
+      <ng-container *ngIf="loading.status">
+        <ng-container *ngFor="let _ of [].constructor(loading.quantity)">
+          <app-project-card-loading></app-project-card-loading
+        ></ng-container>
+      </ng-container>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+.mat-dialog-content {
+  margin-top: 20px;
+}
+mat-form-field {
+  width: 100%;
+  margin-bottom: 6px;
+}
+::ng-deep mat-dialog-container .mat-mdc-dialog-surface {
+  padding: 0.75rem;
+}
+.mat-mdc-dialog-actions {
+  padding: 0 20px;
+}

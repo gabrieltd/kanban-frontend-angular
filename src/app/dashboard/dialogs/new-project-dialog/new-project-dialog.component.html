@@ -1,0 +1,69 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <h1 mat-dialog-title>Nuevo proyecto</h1>
+  <div mat-dialog-content class="mat-dialog-content">
+    <mat-form-field
+      [color]="this.form.get('title')?.valid ? 'accent' : 'primary'"
+    >
+      <mat-label>Título</mat-label>
+      <input matInput formControlName="title" autocomplete="off" />
+
+      <mat-error>
+        <span *ngIf="form.controls['title'].hasError('required')"
+          >El título es requerido</span
+        >
+        <span *ngIf="form.controls['title'].hasError('minlength'); else second"
+          >El título debe contener al menos 3 caracteres</span
+        >
+        <ng-template #second>
+          <span
+            *ngIf="form.controls['title'].hasError('whitespace'); else third"
+            >Debes ingresar un título válido</span
+          >
+        </ng-template>
+
+        <ng-template #third>
+          <span
+            *ngIf="form.controls['title'].hasError('duplicated'); else fourth"
+            >Ya existe un proyecto con este nombre</span
+          >
+        </ng-template>
+
+        <ng-template #fourth>
+          <span *ngIf="form.controls['title'].hasError('maxlength')"
+            >El título no puede exceder los 25 caracteres</span
+          >
+        </ng-template>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field
+      [color]="this.form.get('title')?.valid ? 'accent' : 'primary'"
+    >
+      <mat-label>Descripción</mat-label>
+      <textarea
+        matInput
+        formControlName="description"
+        autocomplete="off"
+        rows="3"
+        maxlength="80"
+      ></textarea>
+      <mat-error
+        *ngIf="
+          this.form.get('description')!.invalid &&
+          this.form.get('description')!.dirty
+        "
+      >
+        La descripción es requerida
+      </mat-error>
+      <mat-hint align="end"
+        >{{ this.form.get("description")?.value.length }}/80</mat-hint
+      >
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button tpye="submit" [disabled]="this.form.invalid">
+      Crear
+    </button>
+    <button type="button" mat-button (click)="cancel()">Cerrar</button>
+  </div>
+</form>

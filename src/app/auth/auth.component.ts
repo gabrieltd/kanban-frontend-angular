@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { passwordsMatch } from '../shared/validators/validator';
+import { SnackService } from '../core/services/snack.service';
 
 @Component({
   selector: 'app-auth',
@@ -29,7 +30,8 @@ export class AuthComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private snackBar: MatSnackBar,
+
+    private snackService: SnackService,
     private router: Router
   ) {}
 
@@ -50,15 +52,6 @@ export class AuthComponent implements OnInit {
     return (
       this.form.controls['email'].valid && this.form.controls['password'].valid
     );
-  }
-
-  private showErrorMessage(message: string = 'Error') {
-    this.snackBar.open(message, 'OK', {
-      panelClass: ['error-snackbar'],
-      duration: 4000,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-    });
   }
 
   get isLogin() {
@@ -92,7 +85,7 @@ export class AuthComponent implements OnInit {
         next: () => this.router.navigateByUrl('/dashboard'),
         error: (err: Error) => {
           this.loading = false;
-          this.showErrorMessage(err.message);
+          this.snackService.open(err.message, 'error');
         },
       });
     }
@@ -102,7 +95,7 @@ export class AuthComponent implements OnInit {
         next: () => this.router.navigateByUrl('/dashboard'),
         error: (err: Error) => {
           this.loading = false;
-          this.showErrorMessage(err.message);
+          this.snackService.open(err.message, 'error');
         },
       });
     }
@@ -114,7 +107,7 @@ export class AuthComponent implements OnInit {
       next: () => this.router.navigateByUrl('/dashboard'),
       error: (err: Error) => {
         this.loading = false;
-        this.showErrorMessage(err.message);
+        this.snackService.open(err.message, 'error');
       },
     });
   }

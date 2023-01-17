@@ -1,0 +1,67 @@
+<mat-card class="project-card">
+  <mat-card-header>
+    <div class="align-header">
+      <mat-card-title>{{ project.title }}</mat-card-title>
+
+      <button
+        mat-icon-button
+        aria-label="icon-button with a menu"
+        [matMenuTriggerFor]="menu"
+        [disabled]="loading"
+        [class.spinner]="loading"
+      >
+        <mat-icon *ngIf="!loading">more_vert</mat-icon>
+      </button>
+
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>settings</mat-icon>
+          <span>Opciones</span>
+        </button>
+
+        <button mat-menu-item (click)="openDeleteDialog()" color="warn">
+          <mat-icon>delete_forever</mat-icon>
+          <span>Eliminar</span>
+        </button>
+      </mat-menu>
+    </div>
+  </mat-card-header>
+
+  <mat-card-content>
+    <mat-card-subtitle>
+      <div class="project-description">
+        {{ project.description }}
+      </div>
+    </mat-card-subtitle>
+  </mat-card-content>
+  <div class="bottom-aligner"></div>
+
+  <div class="card-footer">
+    <div class="img-container">
+      <img
+        [src]="(this.authService.currentUser | async)?.image"
+        class="user-img"
+      />
+      <!-- <img
+        src="https://api.dicebear.com/5.x/initials/svg?seed=cc-wordless-culvert1s"
+        class="user-img"
+      />
+      <img
+        src="https://api.dicebear.com/5.x/initials/svg?seed=xc-wordldess-culvert1s"
+        class="user-img"
+      />
+
+      <div class="user-img user-count">
+        <span>+3</span>
+      </div> -->
+    </div>
+
+    <button
+      mat-button
+      [disabled]="loading"
+      [routerLink]="'/kanban/' + this.project.id"
+    >
+      Ver proyecto
+    </button>
+  </div>
+</mat-card>

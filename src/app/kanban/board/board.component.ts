@@ -48,8 +48,8 @@ export class BoardComponent implements OnInit {
         if (result.isNew) {
           const priority = this.board.tasks.length;
           const boardId = this.board.id;
-
           const lastElem = this.board.tasks.length;
+
           this.board.tasks.push({ ...result.task, priority, boardId });
 
           this.boardService

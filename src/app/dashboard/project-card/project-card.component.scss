@@ -1,0 +1,85 @@
+.project-card {
+  width: 400px;
+  height: 190px;
+}
+
+.align-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.project-description {
+  word-wrap: break-word;
+}
+
+.user-img {
+  width: 31px;
+  height: 31px;
+  border-radius: 50%;
+  position: relative;
+  border: 2px solid #414141;
+}
+
+.user-img:nth-child(2) {
+  right: 7px;
+}
+
+.user-img:nth-child(3) {
+  right: 14px;
+}
+
+.user-img:nth-child(4) {
+  right: 22px;
+}
+
+.user-count {
+  width: 35px;
+  height: 35px;
+  display: inline-block;
+  background-color: #202020;
+
+  span {
+    font-weight: 400 !important;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.img-container {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner:before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 17px;
+  height: 17px;
+  margin-top: -10px;
+  margin-left: -10px;
+  border-radius: 50%;
+  border: 2px solid #61616149;
+  border-top-color: #d4d4d4;
+  animation: spinner 0.8s linear infinite;
+}

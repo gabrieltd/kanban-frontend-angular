@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { whitespaceValidator } from '../shared/validators/validator';
 import { Router } from '@angular/router';
+import { SnackService } from '../core/services/snack.service';
 
 @Component({
   selector: 'app-profile',
@@ -33,7 +34,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar,
+    private snackService: SnackService,
     private router: Router
   ) {}
 
@@ -51,18 +52,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  private showMessage(
-    message: string = 'Error',
-    type: 'error' | 'success' = 'error'
-  ) {
-    this.snackBar.open(message, 'OK', {
-      panelClass: [`${type}-snackbar`],
-      duration: 4000,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-    });
-  }
-
   onSubmit() {
     if (!this.form.pristine) {
       this.loading = true;
@@ -77,11 +66,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
       this.authService.updateProfile({ username, bio }).subscribe({
         next: () => {
-          this.showMessage('Perfil actualizado', 'success');
+          this.snackService.open('Perfil actualizado', 'success');
           this.loading = false;
         },
         error: (err) => {
-          this.showMessage(err.message, 'error');
+          this.snackService.open(err.message, 'error');
           this.loading = false;
         },
       });
