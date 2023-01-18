@@ -1,0 +1,36 @@
+.wrapper {
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.container {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgb(80, 80, 80);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user__image {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.options {
+  display: flex;
+  align-items: center;
+  .options__chip {
+    height: 25px !important;
+  }
+}

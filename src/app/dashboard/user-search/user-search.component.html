@@ -1,0 +1,50 @@
+<mat-form-field class="mat-form-field" appearance="fill">
+  <mat-label>Buscar usuario</mat-label>
+  <input
+    type="text"
+    matInput
+    [formControl]="query"
+    [matAutocomplete]="auto"
+    (input)="search()"
+  />
+
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    (optionSelected)="onUserSelected($event)"
+  >
+    <mat-option *ngFor="let user of users" [value]="user">
+      <div class="user">
+        <img [src]="user.image" class="user__image" />
+        <small>
+          {{ user.username }}
+        </small>
+      </div>
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<div class="wrapper">
+  <div *ngFor="let user of selectedUsers" class="container">
+    <div class="user">
+      <img [src]="user.image" class="user__image" alt="" />
+      <small>{{ user.username }}</small>
+    </div>
+    <div class="options">
+      <mat-chip-option
+        class="options__chip"
+        #chip
+        [selected]="user.invited"
+        [color]="user.pending ? 'primary' : 'accent'"
+        (click)="onChipClicked(chip, user)"
+        [value]="
+          user.pending && user.invited
+            ? 'Invitado'
+            : !user.pending && user.invited
+            ? 'Aceptado'
+            : 'Invitar'
+        "
+        >{{ chip.value }}</mat-chip-option
+      >
+    </div>
+  </div>
+</div>
