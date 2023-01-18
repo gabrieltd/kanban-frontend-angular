@@ -59,7 +59,14 @@
         >{{ this.form.get("description")?.value.length }}/80</mat-hint
       >
     </mat-form-field>
+    <p>Añadir miembros al proyecto</p>
+    <div class="mat-dialog-content">
+      <app-user-search
+        (selectUserEvent)="membersInvited($event)"
+      ></app-user-search>
+    </div>
   </div>
+
   <div mat-dialog-actions>
     <button mat-button tpye="submit" [disabled]="this.form.invalid">
       Crear

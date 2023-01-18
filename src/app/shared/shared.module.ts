@@ -18,11 +18,13 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DeleteButtonComponent } from './delete-button/delete-button.component';
 import { ShowAuthedDirective } from './show-authed.directive';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { MatTableModule } from '@angular/material/table';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -50,9 +52,13 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
+    MatAutocompleteModule,
     NgxSkeletonLoaderModule,
+    MatTableModule,
+    MatChipsModule,
   ],
   exports: [
+    MatTooltipModule,
     LayoutComponent,
     CommonModule,
     RouterModule,
@@ -72,7 +78,10 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     DeleteButtonComponent,
     MatProgressBarModule,
     MatProgressSpinnerModule,
+    MatAutocompleteModule,
     NgxSkeletonLoaderModule,
+    MatTableModule,
+    MatChipsModule,
   ],
 })
 export class SharedModule {}

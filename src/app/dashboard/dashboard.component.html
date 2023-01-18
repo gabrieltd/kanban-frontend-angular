@@ -1,6 +1,5 @@
 <div class="dashboard">
   <div class="toolbar">
-    <h3>Dashboard</h3>
     <button
       type="button"
       mat-stroked-button
@@ -12,7 +11,14 @@
     </button>
   </div>
 
-  <div class="card-container">
+  <div *ngIf="projects.length === 0" class="no-projects">
+    <h2>No tienes proyectos</h2>
+
+    <button mat-raised-button color="primary" (click)="openNewDialog()">
+      <mat-icon>+</mat-icon> Crea uno
+    </button>
+  </div>
+  <div class="card-container" *ngIf="projects.length !== 0">
     <div class="inner-container">
       <app-project-card
         *ngFor="let project of projects"

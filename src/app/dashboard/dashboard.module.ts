@@ -10,6 +10,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { NewProjectDialogComponent } from './dialogs/new-project-dialog/new-project-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProjectCardLoadingComponent } from './project-card-loading/project-card-loading.component';
+import { UserSearchComponent } from './user-search/user-search.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { ProjectCardLoadingComponent } from './project-card-loading/project-card
     DeleteProjectDialogComponent,
     NewProjectDialogComponent,
     ProjectCardLoadingComponent,
+    UserSearchComponent,
   ],
   imports: [
     CommonModule,

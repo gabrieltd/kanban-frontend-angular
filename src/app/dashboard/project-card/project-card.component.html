@@ -14,7 +14,7 @@
       </button>
 
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>
+        <button mat-menu-item (click)="openOptionsDialog()">
           <mat-icon>settings</mat-icon>
           <span>Opciones</span>
         </button>
@@ -39,21 +39,30 @@
   <div class="card-footer">
     <div class="img-container">
       <img
+        [matTooltip]="(this.authService.currentUser | async)?.username || ''"
         [src]="(this.authService.currentUser | async)?.image"
         class="user-img"
-      />
-      <!-- <img
-        src="https://api.dicebear.com/5.x/initials/svg?seed=cc-wordless-culvert1s"
-        class="user-img"
-      />
-      <img
-        src="https://api.dicebear.com/5.x/initials/svg?seed=xc-wordldess-culvert1s"
-        class="user-img"
+        [matTooltipPosition]="'above'"
       />
 
-      <div class="user-img user-count">
-        <span>+3</span>
-      </div> -->
+      <img
+        [matTooltip]="project.members[0].user?.username || ''"
+        *ngIf="project.members[0]"
+        [src]="project.members[0].user?.image"
+        class="user-img"
+        [matTooltipPosition]="'above'"
+      />
+      <img
+        [matTooltip]="project.members[1].user?.username || ''"
+        *ngIf="project.members[1]"
+        [src]="project.members[1].user?.image"
+        class="user-img"
+        [matTooltipPosition]="'above'"
+      />
+
+      <div class="user-img user-count" *ngIf="project.members.length > 3">
+        <span>+{{ project.members.length - 3 }}</span>
+      </div>
     </div>
 
     <button

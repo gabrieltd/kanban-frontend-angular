@@ -5,6 +5,7 @@ import { Project } from '../../core/interfaces/project.interface';
 import { ProjectService } from '../../core/services/project.service';
 import { catchError, of } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
+import { NewProjectDialogComponent } from '../dialogs/new-project-dialog/new-project-dialog.component';
 
 @Component({
   selector: 'app-project-card',
@@ -37,6 +38,14 @@ export class ProjectCardComponent {
           this.loading = false;
         });
       }
+    });
+  }
+
+  openOptionsDialog(): void {
+    const dialogRef = this.dialog.open(NewProjectDialogComponent, {
+      width: '500px',
+      panelClass: 'custom-dialog',
+      data: { project: this.project },
     });
   }
 }
