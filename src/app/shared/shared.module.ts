@@ -25,6 +25,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { MatChipsModule } from '@angular/material/chips';
     NgxSkeletonLoaderModule,
     MatTableModule,
     MatChipsModule,
+    MatBadgeModule,
   ],
   exports: [
     MatTooltipModule,
@@ -82,6 +84,7 @@ import { MatChipsModule } from '@angular/material/chips';
     NgxSkeletonLoaderModule,
     MatTableModule,
     MatChipsModule,
+    MatBadgeModule,
   ],
 })
 export class SharedModule {}

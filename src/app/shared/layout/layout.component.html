@@ -57,6 +57,7 @@
       <span class="logo" routerLink="/">Kanban</span>
 
       <span class="fill-space"></span>
+
       <div *ngIf="!(isHandset$ | async)">
         <a mat-button routerLink="/dashboard" *appShowAuthed="true">
           <mat-icon aria-hidden="false" fontIcon="dashboard"></mat-icon>

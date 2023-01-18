@@ -28,19 +28,19 @@
         {{ task.description }}
       </mat-card>
     </div>
-
-    <span class="button-container">
-      <button
-        mat-stroked-button
-        (click)="openTaskDialog()"
-        [disabled]="hasPreviewData"
-      >
-        <mat-icon>add</mat-icon>
-      </button>
-      <app-delete-button
-        (delete)="handleDelete()"
-        [showSpinner]="isDeleting"
-      ></app-delete-button>
-    </span>
   </div>
+
+  <span class="button-container">
+    <button
+      mat-stroked-button
+      (click)="openTaskDialog()"
+      [disabled]="hasPreviewData"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+    <app-delete-button
+      (delete)="handleDelete()"
+      [showSpinner]="isDeleting"
+    ></app-delete-button>
+  </span>
 </mat-card>

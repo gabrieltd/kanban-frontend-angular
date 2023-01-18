@@ -28,6 +28,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = { status: true, quantity: 4 };
+
     this.projectService
       .setProjects()
       .pipe(switchMap(() => this.projectService.projects))
@@ -60,6 +61,7 @@ export class DashboardComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        console.log('result', result);
         this.loading = { status: true, quantity: 1 };
         this.projectService.save(result).subscribe({
           next: (res) => {

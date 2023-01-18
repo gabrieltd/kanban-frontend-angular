@@ -26,6 +26,10 @@
   transition: transform 300ms ease;
 }
 
+.tasks {
+  min-height: 80px;
+}
+
 .tasks.cdk-drop-list-dragging .cdk-drag {
   transition: transform 300ms ease;
 }
@@ -76,14 +80,15 @@ button {
   }
 }
 
+.task {
+  position: relative;
+}
 .no-tasks-card {
-  height: 55px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: gray;
-  margin: 12px 0;
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  transform: translate(-50%, -50%);
 }
 
 mat-card-title {

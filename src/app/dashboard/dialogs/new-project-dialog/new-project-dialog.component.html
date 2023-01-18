@@ -1,5 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
-  <h1 mat-dialog-title>Nuevo proyecto</h1>
+  <h1 mat-dialog-title>
+    {{ this.data.isNew ? "Nuevo proyecto" : "Opciones" }}
+  </h1>
   <div mat-dialog-content class="mat-dialog-content">
     <mat-form-field
       [color]="this.form.get('title')?.valid ? 'accent' : 'primary'"

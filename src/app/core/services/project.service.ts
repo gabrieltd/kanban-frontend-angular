@@ -14,7 +14,7 @@ import { of, map, catchError, switchMap } from 'rxjs';
   providedIn: 'root',
 })
 export class ProjectService {
-  private projectsLoaded: boolean = false;
+  private projectsInit: boolean = false;
   private projectsSubject = new BehaviorSubject<Project[]>([] as Project[]);
   public projects = this.projectsSubject
     .asObservable()
@@ -23,11 +23,13 @@ export class ProjectService {
   constructor(private apiService: ApiService) {}
 
   setProjects(): Observable<boolean> {
-    if (!this.projectsLoaded) {
+    if (!this.projectsInit) {
+      this.projectsInit = true;
+
       return this.getAll().pipe(
         map((data) => {
+          console.log(data);
           this.projectsSubject.next(data);
-          this.projectsLoaded = true;
           return true;
         })
       );
@@ -36,7 +38,7 @@ export class ProjectService {
     return of(false);
   }
 
-  getAll(): Observable<any> {
+  private getAll(): Observable<any> {
     return this.apiService.get('/projects');
   }
 
@@ -88,7 +90,7 @@ export class ProjectService {
   }
 
   clean(): void {
-    this.projectsLoaded = false;
+    this.projectsInit = false;
     this.projectsSubject.next([]);
   }
 }
