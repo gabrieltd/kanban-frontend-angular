@@ -5,25 +5,33 @@
       mat-stroked-button
       color="primary"
       (click)="openNewDialog()"
+      *ngIf="this.projects.length !== 0 || this.loading.status"
+      [disabled]="this.loading.status"
     >
       <mat-icon>+</mat-icon>
       Nuevo proyecto
     </button>
   </div>
 
-  <div *ngIf="projects.length === 0" class="no-projects">
+  <div
+    *ngIf="projects.length === 0 && !this.loading.status"
+    class="no-projects"
+  >
     <h2>No tienes proyectos</h2>
 
     <button mat-raised-button color="primary" (click)="openNewDialog()">
       <mat-icon>+</mat-icon> Crea uno
     </button>
   </div>
-  <div class="card-container" *ngIf="projects.length !== 0">
+
+  <div
+    class="card-container"
+    *ngIf="projects.length !== 0 || this.loading.status"
+  >
     <div class="inner-container">
       <app-project-card
         *ngFor="let project of projects"
         [project]="project"
-        (deleteRequest)="handleDeleteRequest($event)"
       ></app-project-card>
 
       <ng-container *ngIf="loading.status">

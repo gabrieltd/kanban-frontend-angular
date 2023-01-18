@@ -28,58 +28,51 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = { status: true, quantity: 4 };
-
-    this.projectService.getAll().subscribe({
-      next: (data) => {
-        data.sort((a: Project, b: Project) => {
-          var dateA = dayjs(a.createdAt);
-          var dateB = dayjs(b.createdAt);
-          return dateA.isBefore(dateB) ? -1 : 1;
-        });
-
-        this.projects = data;
-        this.loading.status = false;
-      },
-      error: (err) => {
-        this.loading.status = false;
-      },
-    });
-  }
-
-  handleDeleteRequest(projectId: string): void {
-    this.projects = this.projects.filter((p) => p.id !== projectId);
+    this.projectService
+      .setProjects()
+      .pipe(switchMap(() => this.projectService.projects))
+      .subscribe({
+        next: (data) => {
+          data.sort((a: Project, b: Project) => {
+            const dateA = dayjs(a.createdAt);
+            const dateB = dayjs(b.createdAt);
+            return dateA.isBefore(dateB) ? -1 : 1;
+          });
+          this.projects = data;
+          this.loading.status = false;
+        },
+        error: () => {
+          this.snackService.open(
+            'Algo salio mal. Inténtelo más tarde.',
+            'error'
+          );
+          this.loading.status = false;
+        },
+      });
   }
 
   openNewDialog(): void {
     const dialogRef = this.dialog.open(NewProjectDialogComponent, {
       width: '500px',
       panelClass: 'custom-dialog',
-      data: { projects: this.projects },
+      data: { isNew: true, projects: this.projects, project: { members: [] } },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.loading = { status: true, quantity: 1 };
-        this.projectService
-          .save(result)
-          .pipe(
-            switchMap((data) => {
-              return this.projectService.getById(data.id);
-            })
-          )
-          .subscribe({
-            next: (data) => {
-              this.projects.push(data);
-              this.loading.status = false;
-            },
-            error: (err) => {
-              this.loading.status = false;
-              this.snackService.open(
-                'Error en la creación del proyecto',
-                'error'
-              );
-            },
-          });
+        this.projectService.save(result).subscribe({
+          next: (res) => {
+            this.loading.status = false;
+          },
+          error: (err) => {
+            this.loading.status = false;
+            this.snackService.open(
+              'Error en la creación del proyecto',
+              'error'
+            );
+          },
+        });
       }
     });
   }

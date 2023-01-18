@@ -26,6 +26,7 @@ import { User } from '../interfaces/user.inferface';
 import { Auth } from '../interfaces/auth.interface';
 import { BYPASS_LOG } from '../interceptors/auth.interceptor';
 import { Router } from '@angular/router';
+import { ProjectService } from './project.service';
 
 @Injectable({
   providedIn: 'root',
@@ -50,7 +51,8 @@ export class AuthService {
   constructor(
     private apiService: ApiService,
     private jwtService: JwtService,
-    private router: Router
+    private router: Router,
+    private projectService: ProjectService
   ) {}
 
   private setAuth(res: Auth) {
@@ -126,6 +128,7 @@ export class AuthService {
           this.currentUserSubject.next({} as User);
           this.jwtService.destroyToken();
           this.router.navigateByUrl('/login');
+          this.projectService.clean();
           return res.ok;
         }),
         catchError(() => of(false))

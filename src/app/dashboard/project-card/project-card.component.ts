@@ -6,6 +6,7 @@ import { ProjectService } from '../../core/services/project.service';
 import { catchError, of } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { NewProjectDialogComponent } from '../dialogs/new-project-dialog/new-project-dialog.component';
+import { SnackService } from '../../core/services/snack.service';
 
 @Component({
   selector: 'app-project-card',
@@ -20,6 +21,7 @@ export class ProjectCardComponent {
   constructor(
     private projectService: ProjectService,
     public authService: AuthService,
+    private snackService: SnackService,
     public dialog: MatDialog
   ) {}
   openDeleteDialog(): void {
@@ -34,7 +36,6 @@ export class ProjectCardComponent {
         this.loading = true;
 
         this.projectService.delete(this.project.id).subscribe(() => {
-          this.deleteRequest.emit(this.project.id);
           this.loading = false;
         });
       }
@@ -45,7 +46,25 @@ export class ProjectCardComponent {
     const dialogRef = this.dialog.open(NewProjectDialogComponent, {
       width: '500px',
       panelClass: 'custom-dialog',
-      data: { project: this.project },
+      data: { isNew: false, project: this.project },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.loading = true;
+        this.projectService.update(result, this.project.id).subscribe({
+          next: (res) => {
+            this.loading = false;
+          },
+          error: (err) => {
+            this.loading = false;
+            this.snackService.open(
+              'Error en la actualización del proyecto',
+              'error'
+            );
+          },
+        });
+      }
     });
   }
 }

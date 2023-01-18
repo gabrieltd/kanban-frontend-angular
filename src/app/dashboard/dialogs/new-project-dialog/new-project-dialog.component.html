@@ -63,13 +63,14 @@
     <div class="mat-dialog-content">
       <app-user-search
         (selectUserEvent)="membersInvited($event)"
+        [members]="this.data.project.members"
       ></app-user-search>
     </div>
   </div>
 
   <div mat-dialog-actions>
     <button mat-button tpye="submit" [disabled]="this.form.invalid">
-      Crear
+      {{ this.data.isNew ? "Crear" : "Actualizar" }}
     </button>
     <button type="button" mat-button (click)="cancel()">Cerrar</button>
   </div>
