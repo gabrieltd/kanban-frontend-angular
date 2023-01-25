@@ -1,14 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-import {
-  Observable,
-  BehaviorSubject,
-  distinctUntilChanged,
-  delay,
-  tap,
-} from 'rxjs';
+import { Observable, BehaviorSubject, distinctUntilChanged, tap } from 'rxjs';
 import { Project } from '../interfaces/project.interface';
-import { of, map, catchError, switchMap } from 'rxjs';
+import { of, map, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +22,6 @@ export class ProjectService {
 
       return this.getAll().pipe(
         map((data) => {
-          console.log(data);
           this.projectsSubject.next(data);
           return true;
         })
@@ -36,6 +29,14 @@ export class ProjectService {
     }
 
     return of(false);
+  }
+
+  refreshProjects(): void {
+    this.getAll()
+      .pipe()
+      .subscribe((data) => {
+        this.projectsSubject.next(data);
+      });
   }
 
   private getAll(): Observable<any> {
@@ -50,9 +51,7 @@ export class ProjectService {
     return this.apiService.post(`/projects/`, body).pipe(
       switchMap((data) => this.getById(data.id)),
       map((data) => {
-        const nextValue = this.projectsSubject.getValue();
-        nextValue.push(data);
-        this.projectsSubject.next(nextValue);
+        this.projectsSubject.next([...this.projectsSubject.getValue(), data]);
 
         return true;
       })

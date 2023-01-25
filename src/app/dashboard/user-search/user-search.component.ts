@@ -5,6 +5,7 @@ import { UserService } from '../../core/services/user.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FormControl } from '@angular/forms';
 import { MatChipOption } from '@angular/material/chips';
+import { Membership } from '../../core/interfaces/membership.interface';
 
 interface UserProperties {
   id: string;
@@ -14,6 +15,7 @@ interface UserProperties {
   bio: string;
   pending: boolean;
   invited: boolean;
+  admin: boolean;
 }
 
 @Component({
@@ -28,22 +30,29 @@ export class UserSearchComponent implements OnInit {
   usersInvited: any[] = [];
   query = new FormControl();
 
-  @Input() members?: User[] = [];
+  @Input() members?: Membership[] = [];
   @Output() selectUserEvent = new EventEmitter<User[]>();
 
   constructor(
     private userService: UserService,
-    private authService: AuthService
+    public authService: AuthService
   ) {}
 
   ngOnInit(): void {
     if (this.members!.length > 0) {
       const membersSelected = this.members!.map((m: any) => {
-        return { ...m.user, pending: m.pending, invited: true };
+        return { ...m.user, pending: m.pending, invited: true, admin: m.admin };
+      }).sort((a, b) => {
+        if (a.admin === b.admin) {
+          return 0;
+        }
+        return a.admin ? -1 : 1;
       });
+
       const membersInvited = this.members!.map((m: any) => {
         return { ...m.user, pending: m.pending };
       });
+
       this.usersInvited = membersInvited;
 
       this.selectedUsers = membersSelected;
@@ -51,23 +60,25 @@ export class UserSearchComponent implements OnInit {
   }
 
   search() {
-    this.userService
-      .getUsers(this.query.value)
-
-      .subscribe((users) => {
-        this.users = users.filter(
-          (user) =>
-            user.username !== this.authService.getCurrentUser().username &&
-            !this.selectedUsers.some(
-              (selectedUser) => user.id === selectedUser.id
-            )
-        );
-      });
+    this.userService.getUsers(this.query.value).subscribe((users) => {
+      this.users = users.filter(
+        (user) =>
+          user.username !== this.authService.getCurrentUser().username &&
+          !this.selectedUsers.some(
+            (selectedUser) => user.id === selectedUser.id
+          )
+      );
+    });
   }
 
   onUserSelected(event: MatAutocompleteSelectedEvent) {
     const user: User = event.option.value;
-    const userProperties = { ...user, pending: true, invited: true };
+    const userProperties = {
+      ...user,
+      pending: true,
+      invited: true,
+      admin: false,
+    };
     this.selectedUsers.push(userProperties);
     this.usersInvited.push({ ...user, pending: true });
 

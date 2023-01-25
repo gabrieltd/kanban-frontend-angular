@@ -11,6 +11,7 @@ import { NewProjectDialogComponent } from './dialogs/new-project-dialog/new-proj
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProjectCardLoadingComponent } from './project-card-loading/project-card-loading.component';
 import { UserSearchComponent } from './user-search/user-search.component';
+import { MembersImageComponent } from './project-card/members-image/members-image.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { UserSearchComponent } from './user-search/user-search.component';
     NewProjectDialogComponent,
     ProjectCardLoadingComponent,
     UserSearchComponent,
+    MembersImageComponent,
   ],
   imports: [
     CommonModule,

@@ -10,12 +10,6 @@ import {
   whitespaceValidator,
 } from '../../../shared/validators/validator';
 
-export interface State {
-  flag: string;
-  name: string;
-  population: string;
-}
-
 @Component({
   selector: 'app-new-project-dialog',
   templateUrl: './new-project-dialog.component.html',
@@ -45,9 +39,11 @@ export class NewProjectDialogComponent implements OnInit {
     if (!this.data.isNew) {
       titleValue = this.data.project.title;
       descriptionValue = this.data.project.description;
+
       projectNames = projectNames.filter((name) => name !== titleValue);
+
       this.members = this.data.project.members.map((m: any) => {
-        return { ...m.user, pending: m.pending };
+        return { ...m.user, pending: m.pending, admin: m.admin };
       });
     }
 
@@ -79,7 +75,6 @@ export class NewProjectDialogComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.members);
     const projectSubmit = {
       project: { ...this.form.value },
       members: this.members.map((m) => {

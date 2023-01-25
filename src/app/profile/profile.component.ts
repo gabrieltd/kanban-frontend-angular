@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { whitespaceValidator } from '../shared/validators/validator';
 import { Router } from '@angular/router';
 import { SnackService } from '../core/services/snack.service';
+import { ProjectService } from '../core/services/project.service';
 
 @Component({
   selector: 'app-profile',
@@ -35,6 +36,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private snackService: SnackService,
+    private projectService: ProjectService,
     private router: Router
   ) {}
 
@@ -66,6 +68,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
       this.authService.updateProfile({ username, bio }).subscribe({
         next: () => {
+          this.projectService.refreshProjects();
           this.snackService.open('Perfil actualizado', 'success');
           this.loading = false;
         },

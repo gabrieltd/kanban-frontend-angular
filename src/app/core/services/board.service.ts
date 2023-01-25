@@ -11,37 +11,61 @@ export class BoardService {
 
   //* BOARDS
 
-  getAll(): Observable<Board[]> {
-    return this.apiService.get('/boards/');
+  getAll(projectId: string): Observable<Board[]> {
+    return this.apiService.get(`/projects/${projectId}/boards/`);
   }
 
-  save(body: Object): Observable<any> {
-    return this.apiService.post('/boards/', body);
+  save(body: Object, projectId: string): Observable<any> {
+    return this.apiService.post(`/projects/${projectId}/boards/`, body);
   }
 
-  delete(boardId: string): Observable<any> {
-    return this.apiService.delete(`/boards/${boardId}`);
+  delete(boardId: string, projectId: string): Observable<any> {
+    return this.apiService.delete(`/projects/${projectId}/boards/${boardId}`);
   }
 
-  updateBoardPriority(boards: Board[]): Observable<any> {
-    return this.apiService.put('/boards/batch', boards);
+  updateBoardPriority(boards: Board[], projectId: string): Observable<any> {
+    return this.apiService.put(`/projects/${projectId}/boards/batch`, boards);
   }
 
   //* TASKS
 
-  updateTaskPriority(board: Board): Observable<any> {
-    return this.apiService.put('/tasks/batch', board);
+  updateTasks(
+    board: Board,
+    boardId: string,
+    projectId: string
+  ): Observable<any> {
+    return this.apiService.put(
+      `/projects/${projectId}/boards/${boardId}/tasks/`,
+      board
+    );
   }
 
-  saveTask(body: Object): Observable<any> {
-    return this.apiService.post('/tasks/', body);
+  saveTask(body: Object, boardId: string, projectId: string): Observable<any> {
+    return this.apiService.post(
+      `/projects/${projectId}/boards/${boardId}/tasks/`,
+      body
+    );
   }
 
-  updateTask(taskId: string, body: Object): Observable<any> {
-    return this.apiService.put(`/tasks/${taskId}`, body);
+  updateTask(
+    body: Object,
+    projectId: string,
+    boardId: string,
+    taskId: string
+  ): Observable<any> {
+    return this.apiService.put(
+      `/projects/${projectId}/boards/${boardId}/tasks/${taskId}`,
+      body
+    );
   }
 
-  deleteTask(taskId: string): Observable<any> {
-    return this.apiService.delete(`/tasks/${taskId}`);
+  deleteTask(
+    projectId: string,
+    boardId: string,
+    taskId: string
+  ): Observable<any> {
+    return this.apiService.delete(
+      `/projects/${projectId}/boards/${boardId}/tasks/${taskId}`
+    );
   }
 }

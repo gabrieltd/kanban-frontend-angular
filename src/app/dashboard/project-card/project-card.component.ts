@@ -24,6 +24,7 @@ export class ProjectCardComponent {
     private snackService: SnackService,
     public dialog: MatDialog
   ) {}
+
   openDeleteDialog(): void {
     const dialogRef = this.dialog.open(DeleteProjectDialogComponent, {
       width: '400px',

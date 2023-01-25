@@ -99,9 +99,7 @@ export class TaskDialogComponent implements OnInit {
 
   handleTaskDelete(): void {
     this.data.isDelete = true;
-
     this.dialogRef.close(this.data);
-    this.boardService.deleteTask(this.data.task.id).subscribe();
   }
 
   submit(): void {

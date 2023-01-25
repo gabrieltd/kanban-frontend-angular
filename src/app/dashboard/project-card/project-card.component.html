@@ -38,32 +38,8 @@
 
   <div class="card-footer">
     <div class="img-container">
-      <img
-        [matTooltip]="(this.authService.currentUser | async)?.username || ''"
-        [src]="(this.authService.currentUser | async)?.image"
-        class="user-img"
-        [matTooltipPosition]="'above'"
-      />
-      <img
-        [matTooltip]="project.members[0].user?.username || ''"
-        *ngIf="project.members[0]"
-        [src]="project.members[0].user?.image"
-        class="user-img"
-        [matTooltipPosition]="'above'"
-      />
-      <img
-        [matTooltip]="project.members[1].user?.username || ''"
-        *ngIf="project.members[1]"
-        [src]="project.members[1].user?.image"
-        class="user-img"
-        [matTooltipPosition]="'above'"
-      />
-
-      <div class="user-img user-count" *ngIf="project.members.length > 3">
-        <span>+{{ project.members.length - 3 }}</span>
-      </div>
+      <app-members-image [members]="project.members"></app-members-image>
     </div>
-
     <button
       mat-raised-button
       [disabled]="loading"

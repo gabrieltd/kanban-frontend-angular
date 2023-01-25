@@ -1,0 +1,29 @@
+.user-img {
+  width: 31px;
+  height: 31px;
+  border-radius: 50%;
+  position: relative;
+  border: 2px solid #414141;
+}
+.user-img:nth-child(2) {
+  right: 7px;
+}
+.user-img:nth-child(3) {
+  right: 14px;
+}
+.user-img:nth-child(4) {
+  right: 22px;
+}
+.user-count {
+  width: 35px;
+  height: 35px;
+  display: inline-block;
+  background-color: #202020;
+  span {
+    font-weight: 400 !important;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+  }
+}

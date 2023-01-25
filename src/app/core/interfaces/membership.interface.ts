@@ -4,5 +4,6 @@ export interface Membership {
   userId: string;
   canWrite: boolean;
   pending: boolean;
+  admin?: boolean;
   user?: User;
 }

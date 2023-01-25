@@ -5,7 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { NewProjectDialogComponent } from './dialogs/new-project-dialog/new-project-dialog.component';
 import { delay, switchMap } from 'rxjs';
 import { SnackService } from '../core/services/snack.service';
-import { CDK_DRAG_HANDLE } from '@angular/cdk/drag-drop';
 import * as dayjs from 'dayjs';
 
 @Component({
@@ -15,9 +14,9 @@ import * as dayjs from 'dayjs';
 })
 export class DashboardComponent implements OnInit {
   projects: Project[] = [];
-  loading: { status: boolean; quantity: number } = {
+  loading: { status: boolean; previews: number } = {
     status: true,
-    quantity: 4,
+    previews: 4,
   };
 
   constructor(
@@ -27,7 +26,7 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loading = { status: true, quantity: 4 };
+    this.loading = { status: true, previews: 4 };
 
     this.projectService
       .setProjects()
@@ -61,8 +60,7 @@ export class DashboardComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log('result', result);
-        this.loading = { status: true, quantity: 1 };
+        this.loading = { status: true, previews: 1 };
         this.projectService.save(result).subscribe({
           next: (res) => {
             this.loading.status = false;

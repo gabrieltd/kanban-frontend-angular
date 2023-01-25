@@ -30,21 +30,31 @@
       <small>{{ user.username }}</small>
     </div>
     <div class="options">
-      <mat-chip-option
+      <mat-chip
+        [ngStyle]="{ 'background-color': '#c73852' }"
         class="options__chip"
-        #chip
-        [selected]="user.invited"
-        [color]="user.pending ? 'primary' : 'accent'"
-        (click)="onChipClicked(chip, user)"
-        [value]="
-          user.pending && user.invited
-            ? 'Invitado'
-            : !user.pending && user.invited
-            ? 'Aceptado'
-            : 'Invitar'
-        "
-        >{{ chip.value }}</mat-chip-option
+        *ngIf="user.admin; else invited"
+        selectable="false"
       >
+        Admin
+      </mat-chip>
+      <ng-template #invited>
+        <mat-chip-option
+          class="options__chip"
+          #chip
+          [selected]="user.invited"
+          [color]="user.pending ? 'primary' : 'accent'"
+          (click)="onChipClicked(chip, user)"
+          [value]="
+            user.pending && user.invited
+              ? 'Invitado'
+              : !user.pending && user.invited
+              ? 'Aceptado'
+              : 'Invitar'
+          "
+          >{{ chip.value }}</mat-chip-option
+        >
+      </ng-template>
     </div>
   </div>
 </div>

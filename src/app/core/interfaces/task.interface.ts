@@ -3,4 +3,5 @@ export interface Task {
   description: string;
   color: 'red' | 'blue' | 'yellow' | 'purple' | 'orange' | 'green' | 'pink';
   priority: number;
+  boardId: string;
 }

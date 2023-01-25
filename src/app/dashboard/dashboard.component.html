@@ -35,7 +35,7 @@
       ></app-project-card>
 
       <ng-container *ngIf="loading.status">
-        <ng-container *ngFor="let _ of [].constructor(loading.quantity)">
+        <ng-container *ngFor="let _ of [].constructor(loading.previews)">
           <app-project-card-loading></app-project-card-loading
         ></ng-container>
       </ng-container>
