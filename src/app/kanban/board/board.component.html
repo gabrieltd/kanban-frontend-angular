@@ -9,29 +9,31 @@
     </mat-card-subtitle>
   </mat-card-header>
 
-  <div
-    class="tasks"
-    cdkDropList
-    cdkDropListOrientation="vertical"
-    [cdkDropListData]="this.board.tasks"
-    (cdkDropListDropped)="taskDrop($event)"
-    [id]="this.board.id"
-  >
-    <div *ngIf="this.board.tasks.length === 0">
-      <div class="no-tasks-card">No hay tareas</div>
-    </div>
+  <div class="wrapper">
     <div
-      class="inner-card"
-      cdkDrag
-      *ngFor="let task of board.tasks; let i = index"
-      (click)="openTaskDialog(task, i)"
+      #tasksContainer
+      class="tasks"
+      cdkDropList
+      cdkDropListOrientation="vertical"
+      [cdkDropListData]="this.board.tasks"
+      (cdkDropListDropped)="taskDrop($event)"
+      [id]="this.board.id"
     >
-      <mat-card [ngClass]="task.color" class="mat-card">
-        {{ task.description }}
-      </mat-card>
+      <div *ngIf="this.board.tasks.length === 0" class="no-tasks">
+        <div class="no-tasks-content">No hay tareas</div>
+      </div>
+      <div
+        class="inner-card"
+        cdkDrag
+        *ngFor="let task of board.tasks; let i = index"
+        (click)="openTaskDialog(task, i)"
+      >
+        <mat-card [ngClass]="task.color" class="mat-card">
+          {{ task.description }}
+        </mat-card>
+      </div>
     </div>
   </div>
-
   <span class="button-container">
     <button
       mat-stroked-button

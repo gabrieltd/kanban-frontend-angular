@@ -4,30 +4,36 @@
   max-width: 300px;
   padding: 10px;
   background: #212121;
-  max-height: 80vh;
-  overflow-y: auto;
+}
+
+.wrapper {
+  padding: 12px 0;
 }
 
 .inner-card {
-  margin: 5px 0;
-
   cursor: pointer;
 }
-
-.inner-card:first-child {
-  margin-top: 12px;
+.inner-card:not(:first-child):not(:last-child) {
+  margin: 5px 0;
 }
 
-.inner-card:last-of-type {
-  margin-bottom: 12px;
+.inner-card:first-child:nth-last-child(2) {
+  margin-bottom: 5px;
+}
+
+.tasks {
+  min-height: 55px;
+  max-height: 70vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.tasks:has(.inner-card) {
+  min-height: 0px;
 }
 
 .cdk-drag-animating {
   transition: transform 300ms ease;
-}
-
-.tasks {
-  min-height: 80px;
 }
 
 .tasks.cdk-drop-list-dragging .cdk-drag {
@@ -80,10 +86,7 @@ button {
   }
 }
 
-.task {
-  position: relative;
-}
-.no-tasks-card {
+.no-tasks-content {
   color: gray;
   position: absolute;
   left: 50%;

@@ -2,8 +2,10 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  HostListener,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild,
   ViewChildren,
 } from '@angular/core';
@@ -45,8 +47,7 @@ export class BoardListComponent implements OnInit {
     status: false,
     quantity: 3,
   };
-
-  @ViewChild('container') public div!: ElementRef;
+  canScroll: boolean = false;
 
   constructor(
     private projectService: ProjectService,
@@ -57,14 +58,21 @@ export class BoardListComponent implements OnInit {
     public dialog: MatDialog
   ) {}
 
-  scroll$ = fromEvent<WheelEvent>(document, 'wheel');
+  @ViewChild('container') public scrollContainer!: ElementRef;
+
+  @HostListener('wheel', ['$event'])
+  onScroll = (event: WheelEvent) => {
+    if (this.canScroll) {
+      this.scrollContainer.nativeElement.scrollLeft += event.deltaY / 2;
+    }
+  };
+
+  setCanScroll(value: boolean): void {
+    this.canScroll = !value;
+  }
 
   ngOnInit(): void {
     this.loading = { status: true, quantity: 3 };
-
-    this.scroll$.subscribe((ev: any) => {
-      this.div.nativeElement.scrollLeft += ev.deltaY / 2;
-    });
 
     this.route.paramMap
       .pipe(

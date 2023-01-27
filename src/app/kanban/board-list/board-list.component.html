@@ -8,6 +8,7 @@
   <ng-container *ngIf="!loading.status">
     <div class="wrapper" cdkDropListGroup>
       <app-board
+        (scrollEvent)="setCanScroll($event)"
         cdkDrag
         *ngFor="let board of boards; let i = index"
         [board]="board"

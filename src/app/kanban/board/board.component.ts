@@ -1,4 +1,13 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  Output,
+  EventEmitter,
+  HostListener,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { Board } from '../../core/interfaces/board.interface';
 import { BoardService } from '../../core/services/board.service';
 import {
@@ -25,6 +34,7 @@ export class BoardComponent implements OnInit {
   @Input() board!: Board;
   @Output() deleteBoardEvent = new EventEmitter<string>();
   @Output() transferSortEvent = new EventEmitter<any>();
+  @Output() scrollEvent = new EventEmitter<boolean>();
 
   constructor(private boardService: BoardService, private dialog: MatDialog) {}
 
@@ -35,6 +45,22 @@ export class BoardComponent implements OnInit {
       this.tasks = this.board.tasks.map((t) => t.description);
       this.board.tasks.sort((a, b) => a.priority - b.priority);
     }
+  }
+
+  @ViewChild('tasksContainer', { read: ElementRef })
+  public scrollContainer!: ElementRef;
+
+  @HostListener('wheel', ['$event'])
+  onBoardScroll(event: WheelEvent): void {
+    const hasScrollbar =
+      this.scrollContainer.nativeElement.scrollHeight !==
+      this.scrollContainer.nativeElement.clientHeight;
+
+    const isBoardScroll = this.scrollContainer.nativeElement.contains(
+      event.target
+    );
+
+    this.scrollEvent.emit(hasScrollbar && isBoardScroll);
   }
 
   taskDrop(event: CdkDragDrop<Task[]>) {
