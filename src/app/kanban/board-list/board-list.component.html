@@ -12,17 +12,19 @@
         cdkDrag
         *ngFor="let board of boards; let i = index"
         [board]="board"
-        (deleteBoardEvent)="handleDeleteBoardEvent($event)"
       >
         <div class="spacer"></div>
         <mat-icon cdkDragHandle class="handle">drag_indicator</mat-icon>
       </app-board>
     </div>
   </ng-container>
+  <ng-container *ngIf="showPreview">
+    <app-board-preview></app-board-preview>
+  </ng-container>
 
   <ng-container *ngIf="loading.status">
-    <ng-container *ngFor="let _ of [].constructor(loading.quantity)">
-      <app-board-loading></app-board-loading
+    <ng-container *ngFor="let _ of [].constructor(loading.previews)">
+      <app-board-preview></app-board-preview
     ></ng-container>
   </ng-container>
 

@@ -1,60 +1,44 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   HostListener,
   OnDestroy,
   OnInit,
-  Output,
   ViewChild,
-  ViewChildren,
 } from '@angular/core';
 import { BoardService } from '../../core/services/board.service';
 import { Board } from '../../core/interfaces/board.interface';
-import {
-  CdkDragDrop,
-  CdkDropListGroup,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
-import {
-  catchError,
-  fromEvent,
-  map,
-  Observable,
-  switchMap,
-  of,
-  tap,
-  last,
-} from 'rxjs';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { catchError, switchMap, of, tap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { BoardDialogComponent } from '../dialogs/board-dialog/board-dialog.component';
-import { ProjectService } from '../../core/services/project.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Project } from '../../core/interfaces/project.interface';
 import { SnackService } from '../../core/services/snack.service';
-import { Task } from '../../core/interfaces/task.interface';
 
 @Component({
   selector: 'app-board-list',
   templateUrl: './board-list.component.html',
   styleUrls: ['./board-list.component.scss'],
 })
-export class BoardListComponent implements OnInit {
+export class BoardListComponent implements OnInit, OnDestroy {
   boards: Board[] = [];
   projectId: string = '';
-  loading: { status: boolean; quantity: number } = {
+
+  loading: { status: boolean; previews: number } = {
     status: false,
-    quantity: 3,
+    previews: 3,
   };
+
+  showPreview: boolean = false;
+
   canScroll: boolean = false;
 
   constructor(
-    private projectService: ProjectService,
     private boardService: BoardService,
     private route: ActivatedRoute,
     private router: Router,
     private snackService: SnackService,
+
     public dialog: MatDialog
   ) {}
 
@@ -72,24 +56,27 @@ export class BoardListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loading = { status: true, quantity: 3 };
-
+    this.loading = { status: true, previews: 4 };
     this.route.paramMap
       .pipe(
         switchMap((params) => {
           const projectId = params.get('projectId');
-          return this.projectService.getById(projectId!);
+          this.projectId = projectId!;
+
+          return this.boardService.setBoards(projectId!);
+        }),
+        switchMap(() => {
+          return this.boardService.boards;
         }),
         catchError((error) => {
           this.router.navigateByUrl('404');
           return of();
-        }),
-        tap((project) => project.boards.sort((a, b) => a.priority - b.priority))
+        })
       )
-      .subscribe((project) => {
-        this.loading.status = false;
-        this.projectId = project.id;
-        this.boards = project.boards;
+
+      .subscribe((boards) => {
+        this.boards = boards;
+        this.loading = { status: false, previews: 4 };
       });
   }
 
@@ -107,17 +94,9 @@ export class BoardListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        const lastElem = this.boards.length;
-        this.boards.push({
-          id: `${result.title}-${this.boards.length}`,
-          title: result.title,
-          priority: this.boards.length,
-          tasks: [],
-          projectId: this.projectId,
-        });
-
+        this.showPreview = true;
         this.boardService
-          .save(
+          .addBoard(
             {
               title: result.title,
               priority: this.boards.length,
@@ -127,12 +106,11 @@ export class BoardListComponent implements OnInit {
 
           .subscribe({
             next: (data) => {
-              this.boards[lastElem] = { ...data, tasks: [] };
+              this.showPreview = false;
             },
             error: (error) => {
-              this.boards = this.boards.filter((_, index) => {
-                index !== lastElem;
-              });
+              this.showPreview = false;
+
               this.snackService.open(
                 'Error en la creación del tablero. Inténtalo más tarde.',
                 'error'
@@ -144,15 +122,17 @@ export class BoardListComponent implements OnInit {
   }
 
   sortBoards(): void {
-    this.boards.forEach((b, index) => (b.priority = index));
-
-    this.boardService
-      .updateBoardPriority(this.boards, this.projectId)
-      .subscribe();
+    this.boardService.updateBoards(this.projectId).subscribe({
+      error: () => {
+        this.snackService.open(
+          'Error en la actualización del tablero. Inténtalo más tarde.',
+          'error'
+        );
+      },
+    });
   }
 
-  handleDeleteBoardEvent(boardId: string): void {
-    this.boards = this.boards.filter((b) => b.id !== boardId);
-    this.sortBoards();
+  ngOnDestroy(): void {
+    this.boardService.cleanBoards(this.projectId);
   }
 }

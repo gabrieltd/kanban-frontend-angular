@@ -29,14 +29,14 @@
     *ngIf="projects.length !== 0 || this.loading.status"
   >
     <div class="inner-container">
-      <app-project-card
+      <app-project
         *ngFor="let project of projects"
         [project]="project"
-      ></app-project-card>
+      ></app-project>
 
       <ng-container *ngIf="loading.status">
         <ng-container *ngFor="let _ of [].constructor(loading.previews)">
-          <app-project-card-loading></app-project-card-loading
+          <app-project-preview></app-project-preview
         ></ng-container>
       </ng-container>
     </div>

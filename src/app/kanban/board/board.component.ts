@@ -12,7 +12,6 @@ import { Board } from '../../core/interfaces/board.interface';
 import { BoardService } from '../../core/services/board.service';
 import {
   CdkDragDrop,
-  CdkDropList,
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
@@ -20,6 +19,7 @@ import {
 import { Task } from '../../core/interfaces/task.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskDialogComponent } from '../dialogs/task-dialog/task-dialog.component';
+import { SnackService } from '../../core/services/snack.service';
 
 @Component({
   selector: 'app-board',
@@ -29,18 +29,19 @@ import { TaskDialogComponent } from '../dialogs/task-dialog/task-dialog.componen
 export class BoardComponent implements OnInit {
   tasks: string[] = [];
   isDeleting: boolean = false;
-  hasPreviewData: boolean = true;
-
+  showPreview: boolean = false;
   @Input() board!: Board;
-  @Output() deleteBoardEvent = new EventEmitter<string>();
+
   @Output() transferSortEvent = new EventEmitter<any>();
   @Output() scrollEvent = new EventEmitter<boolean>();
 
-  constructor(private boardService: BoardService, private dialog: MatDialog) {}
+  constructor(
+    private boardService: BoardService,
+    private dialog: MatDialog,
+    private snackService: SnackService
+  ) {}
 
   ngOnInit(): void {
-    this.hasPreviewData = this.board.id.includes(this.board.title);
-
     if (this.board.tasks) {
       this.tasks = this.board.tasks.map((t) => t.description);
       this.board.tasks.sort((a, b) => a.priority - b.priority);
@@ -70,7 +71,7 @@ export class BoardComponent implements OnInit {
         event.previousIndex,
         event.currentIndex
       );
-      this.updatePriority();
+      this.move();
     } else {
       transferArrayItem(
         event.previousContainer.data,
@@ -79,7 +80,7 @@ export class BoardComponent implements OnInit {
         event.currentIndex
       );
 
-      this.transferSort(event.container.id);
+      this.transfer(event.container.id);
     }
   }
 
@@ -104,29 +105,44 @@ export class BoardComponent implements OnInit {
         if (result.isNew) {
           const priority = this.board.tasks.length;
           const boardId = this.board.id;
-          const lastElem = this.board.tasks.length;
-
-          this.board.tasks.push({ ...result.task, priority, boardId });
-
+          this.showPreview = true;
           this.boardService
-            .saveTask(
+            .addTask(
               { ...result.task, priority, boardId },
               this.board.id,
               this.board.projectId
             )
-            .subscribe((data) => {
-              this.board.tasks[lastElem] = data;
+            .subscribe({
+              next: () => {
+                this.showPreview = true;
+              },
+              error: () => {
+                this.showPreview = false;
+                this.snackService.open(
+                  'Error en la creación de la tarea. Inténtelo más tarde.',
+                  'error'
+                );
+              },
             });
         } else if (result.isDelete) {
+          this.board = {
+            ...this.board,
+            tasks: this.board.tasks.filter(
+              (task) => task.id !== result.task.id
+            ),
+          };
+
           this.boardService
             .deleteTask(this.board.projectId, this.board.id, result.task.id)
-            .subscribe();
-
-          this.board.tasks = this.board.tasks.filter(
-            (t) => t.id !== result.task.id
-          );
-
-          this.updatePriority();
+            .subscribe({
+              next: () => {},
+              error: () => {
+                this.snackService.open(
+                  'Error en la eliminación de la tarea. Inténtelo más tarde.',
+                  'error'
+                );
+              },
+            });
         } else {
           this.boardService
             .updateTask(
@@ -135,7 +151,7 @@ export class BoardComponent implements OnInit {
               this.board.id,
               result.task.id
             )
-            .subscribe((res) =>
+            .subscribe((res: any) =>
               this.board.tasks.splice(result.index, 1, result.task)
             );
         }
@@ -145,24 +161,21 @@ export class BoardComponent implements OnInit {
 
   handleDeleteBoard(): void {
     this.isDeleting = true;
-    const boardId = this.board.id;
-
-    this.boardService.delete(boardId, this.board.projectId).subscribe(() => {
-      this.isDeleting = false;
-      this.deleteBoardEvent.emit(boardId);
-    });
-  }
-
-  updatePriority(): void {
-    this.board.tasks.forEach((t, index) => (t.priority = index));
 
     this.boardService
-      .updateTasks(this.board, this.board.id, this.board.projectId)
-      .subscribe();
+      .deleteBoard(this.board.id, this.board.projectId)
+      .subscribe(() => {
+        this.isDeleting = false;
+      });
   }
 
-  transferSort(nextBoardId: string): void {
-    this.board.tasks.map((t) => (t.boardId = nextBoardId));
-    this.updatePriority();
+  move(): void {
+    this.boardService.moveTask(this.board.id, this.board.projectId).subscribe();
+  }
+
+  transfer(nextBoardId: string): void {
+    this.boardService
+      .transferTask(nextBoardId, this.board.projectId, this.board.id)
+      .subscribe();
   }
 }

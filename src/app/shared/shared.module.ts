@@ -26,6 +26,9 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatBadgeModule } from '@angular/material/badge';
+import { TaskPreviewComponent } from './preview/task-preview/task-preview.component';
+import { ProjectPreviewComponent } from './preview/project-preview/project-preview.component';
+import { BoardPreviewComponent } from './preview/board-preview/board-preview.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,9 @@ import { MatBadgeModule } from '@angular/material/badge';
     DeleteButtonComponent,
     ShowAuthedDirective,
     NotFoundComponent,
+    ProjectPreviewComponent,
+    BoardPreviewComponent,
+    TaskPreviewComponent,
   ],
   imports: [
     CommonModule,
@@ -60,6 +66,9 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatBadgeModule,
   ],
   exports: [
+    ProjectPreviewComponent,
+    BoardPreviewComponent,
+    TaskPreviewComponent,
     MatTooltipModule,
     LayoutComponent,
     CommonModule,

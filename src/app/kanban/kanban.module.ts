@@ -11,13 +11,11 @@ import { BoardListComponent } from './board-list/board-list.component';
 import { BoardComponent } from './board/board.component';
 import { BoardDialogComponent } from './dialogs/board-dialog/board-dialog.component';
 import { TaskDialogComponent } from './dialogs/task-dialog/task-dialog.component';
-import { BoardLoadingComponent } from './board-loading/board-loading.component';
 
 @NgModule({
   declarations: [
     BoardListComponent,
     BoardComponent,
-    BoardLoadingComponent,
     BoardDialogComponent,
     TaskDialogComponent,
   ],

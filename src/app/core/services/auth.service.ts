@@ -128,7 +128,7 @@ export class AuthService {
           this.currentUserSubject.next({} as User);
           this.jwtService.destroyToken();
           this.router.navigateByUrl('/login');
-          this.projectService.clean();
+          this.projectService.cleanProjects();
           return res.ok;
         }),
         catchError(() => of(false))

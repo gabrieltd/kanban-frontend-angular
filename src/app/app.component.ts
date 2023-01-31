@@ -1,8 +1,6 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from './core/services/auth.service';
-import { ApiService } from './core/services/api.service';
-import { environment } from '../environments/environment';
+import { SocketService } from './core/services/socket.service';
 
 @Component({
   selector: 'app-root',
@@ -12,11 +10,7 @@ import { environment } from '../environments/environment';
 export class AppComponent implements OnInit {
   title = 'kanban-frontend';
 
-  constructor(
-    public authService: AuthService,
-    private router: Router,
-    private apiService: ApiService
-  ) {}
+  constructor(public authService: AuthService) {}
 
   ngOnInit(): void {}
 }

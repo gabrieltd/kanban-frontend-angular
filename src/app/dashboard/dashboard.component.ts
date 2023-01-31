@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.loading = { status: true, previews: 1 };
-        this.projectService.save(result).subscribe({
+        this.projectService.addProject(result).subscribe({
           next: (res) => {
             this.loading.status = false;
           },

@@ -3,23 +3,21 @@ import { CommonModule } from '@angular/common';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
-import { ProjectCardComponent } from './project-card/project-card.component';
+import { ProjectComponent } from './project/project.component';
 import { SharedModule } from '../shared/shared.module';
 import { DeleteProjectDialogComponent } from './dialogs/delete-project-dialog/delete-project-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NewProjectDialogComponent } from './dialogs/new-project-dialog/new-project-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ProjectCardLoadingComponent } from './project-card-loading/project-card-loading.component';
 import { UserSearchComponent } from './user-search/user-search.component';
-import { MembersImageComponent } from './project-card/members-image/members-image.component';
+import { MembersImageComponent } from './project/members-image/members-image.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    ProjectCardComponent,
+    ProjectComponent,
     DeleteProjectDialogComponent,
     NewProjectDialogComponent,
-    ProjectCardLoadingComponent,
     UserSearchComponent,
     MembersImageComponent,
   ],

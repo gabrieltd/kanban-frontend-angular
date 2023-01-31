@@ -8,7 +8,7 @@ import { of, map, switchMap } from 'rxjs';
   providedIn: 'root',
 })
 export class ProjectService {
-  private projectsInit: boolean = false;
+  private initialLoading: boolean = false;
   private projectsSubject = new BehaviorSubject<Project[]>([] as Project[]);
   public projects = this.projectsSubject
     .asObservable()
@@ -17,8 +17,8 @@ export class ProjectService {
   constructor(private apiService: ApiService) {}
 
   setProjects(): Observable<boolean> {
-    if (!this.projectsInit) {
-      this.projectsInit = true;
+    if (!this.initialLoading) {
+      this.initialLoading = true;
 
       return this.getAll().pipe(
         map((data) => {
@@ -43,13 +43,13 @@ export class ProjectService {
     return this.apiService.get('/projects');
   }
 
-  getById(projectId: string): Observable<Project> {
+  getProjectById(projectId: string): Observable<Project> {
     return this.apiService.get(`/projects/${projectId}`);
   }
 
-  save(body: Object): Observable<boolean> {
+  addProject(body: Object): Observable<boolean> {
     return this.apiService.post(`/projects/`, body).pipe(
-      switchMap((data) => this.getById(data.id)),
+      switchMap((data) => this.getProjectById(data.id)),
       map((data) => {
         this.projectsSubject.next([...this.projectsSubject.getValue(), data]);
 
@@ -58,9 +58,9 @@ export class ProjectService {
     );
   }
 
-  update(body: Object, projectId: string): Observable<boolean> {
+  updateProject(body: Object, projectId: string): Observable<boolean> {
     return this.apiService.put(`/projects/${projectId}`, body).pipe(
-      switchMap((data) => this.getById(data.id)),
+      switchMap((data) => this.getProjectById(data.id)),
       map((data) => {
         const arr = this.projectsSubject.getValue();
 
@@ -76,7 +76,7 @@ export class ProjectService {
     );
   }
 
-  delete(projectId: string): Observable<boolean> {
+  deleteProject(projectId: string): Observable<boolean> {
     return this.apiService.delete(`/projects/${projectId}`).pipe(
       map(() => {
         const nextValue = this.projectsSubject
@@ -88,8 +88,8 @@ export class ProjectService {
     );
   }
 
-  clean(): void {
-    this.projectsInit = false;
+  cleanProjects(): void {
+    this.initialLoading = false;
     this.projectsSubject.next([]);
   }
 }
