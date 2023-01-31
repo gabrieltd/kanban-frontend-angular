@@ -94,11 +94,6 @@ export class BoardService {
             });
 
           this.boardsSubject.next(boards);
-          this.socketService.send('board-update', {
-            projectId: this.projectId,
-            content: boards,
-            sender: this.authService.getCurrentUser().id,
-          });
 
           return boards;
         }),
@@ -111,6 +106,7 @@ export class BoardService {
     const boards = this.boardsSubject.getValue().map((board, index) => {
       return { ...board, priority: index };
     });
+
     this.boardsSubject.next(boards);
     this.socketService.send('board-update', {
       projectId: this.projectId,
@@ -283,7 +279,6 @@ export class BoardService {
     this.socketService.send('board-update', {
       projectId: this.projectId,
       content: nextValue,
-      sender: this.authService.getCurrentUser().id,
     });
 
     let board = this.boardsSubject
@@ -294,10 +289,8 @@ export class BoardService {
   }
 
   listenEvents(): void {
-    this.socketService.listen('board-update', ({ content, sender }: any) => {
-      if (sender !== this.authService.getCurrentUser().id) {
-        this.boardsSubject.next(content);
-      }
+    this.socketService.listen('board-update', ({ content }: any) => {
+      this.boardsSubject.next(content);
     });
   }
 }
