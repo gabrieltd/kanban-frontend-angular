@@ -1,4 +1,4 @@
-<main>
+<main *ngIf="!(authService.loading | async)">
   <div class="container">
     <mat-card>
       <div class="card-container">

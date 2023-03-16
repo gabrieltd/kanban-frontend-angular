@@ -1,4 +1,10 @@
 <app-layout>
-  <mat-spinner *ngIf="authService.loading | async"></mat-spinner>
+  <div class="spinner">
+    <mat-spinner *ngIf="authService.loading | async"></mat-spinner>
+    <span
+      *ngIf="authService.waitingForResponse && (authService.loading | async)"
+      >Por favor espera. El servidor se está levantando 🤞</span
+    >
+  </div>
   <router-outlet></router-outlet>
 </app-layout>

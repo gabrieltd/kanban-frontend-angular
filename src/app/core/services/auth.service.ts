@@ -32,6 +32,7 @@ import { ProjectService } from './project.service';
   providedIn: 'root',
 })
 export class AuthService {
+  public waitingForResponse: boolean = false;
   private loadingSubject = new BehaviorSubject<boolean>(false);
 
   public loading = this.loadingSubject

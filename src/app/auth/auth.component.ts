@@ -29,7 +29,7 @@ export class AuthComponent implements OnInit {
   hideConfirm: boolean = true;
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService,
+    public authService: AuthService,
 
     private snackService: SnackService,
     private router: Router

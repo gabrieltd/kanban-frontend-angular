@@ -9,7 +9,7 @@ import {
   UrlSegment,
   UrlTree,
 } from '@angular/router';
-import { Observable, tap, take, map, delay } from 'rxjs';
+import { Observable, tap, take, map, delay, timeout } from 'rxjs';
 import { AuthService } from '../core/services/auth.service';
 
 @Injectable({
@@ -31,9 +31,19 @@ export class AuthGuard implements CanActivate, CanLoad {
     if (init) {
       this.authService.setLoading(true);
 
+      const timeout = setTimeout(() => {
+        if (this.authService.loading && !this.authService.waitingForResponse) {
+          this.authService.waitingForResponse = true;
+        }
+      }, 3400);
+
       return this.authService.refreshSession().pipe(
         map((res) => {
+          this.authService.waitingForResponse = false;
+          clearTimeout(timeout);
+
           this.authService.setLoading(false);
+
           if (!res) {
             this.router.navigateByUrl('/login');
           }
